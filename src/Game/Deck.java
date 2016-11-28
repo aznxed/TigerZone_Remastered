@@ -8,6 +8,7 @@ public class Deck {
 	public void addTile(Tile tile){
 		tileDeck.add(tile);
 	}
+	
 	public Tile getTop(){
 		return tileDeck.remove();
 	}
