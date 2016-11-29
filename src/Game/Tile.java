@@ -247,7 +247,7 @@ public class Tile {
 			}
 		
 		TerrainType[] empty = {}; 
-		return tilePortionType;
+		return empty;
 	}	
 	
 	/*public Tile(String terrainTypeString, int row, int col, int degrees){
