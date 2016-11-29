@@ -15,7 +15,11 @@ public class Board {
 	private int rightBound;
 	
 	public Deck deck = new Deck();
+	
+	// Every board will be comprised of a 2D array
 	private Tile[][] board = new Tile[MAX_ROWS][MAX_COLS];
+	
+	// Keep a list of all the tiles placed on the board
 	private List<Tile> placedTiles = new ArrayList<Tile>();
 	
 	//Is this needed?
@@ -61,6 +65,12 @@ public class Board {
 		return this.board;
 	}
 	
+	//Getter for placed tiles list, useful for testing
+		public List<Tile> getPlacedTile(){
+			return this.placedTiles;
+		}
+
+	
 	public Tile getTile(int x, int y) {
 		if (x >= 0 && x < MAX_ROWS && y >= 0 && y < MAX_COLS) {
 			return board[x][y];
@@ -75,7 +85,19 @@ public class Board {
 	//Place a Tile
 	public int placeTile(int x, int y, int rotation, Tile tile){
 		
+		/*if (!isValid(x, y, tile)) {
+		return false;
+		}*/
+		// add tile to board
+		// give tile coords
+		placedTiles.add(tile);
+		board[x][y] = tile;
+		tile.setCol(y);
+		tile.setRow(x);
+		tile.setBoard(this);
+		
 		return 1;
+		//return true;
 	}
 	
 	

@@ -10,19 +10,31 @@ public class Tile {
 	private String terrainTypeString;
 	private int degrees;
 	
+	//Every tile has to be associated with a board object 
+	private Board board;
+	
 	private TerrainType[] tilePortionType = new TerrainType[9];
 	
 	/*******************************************/
 	/******* Getter and Setter Functions *******/
 	/*******************************************/
 	
-	public int getRow(){
+	public int getRow() {
 		return row;
 	}
-	
-	public int getCol(){
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
 		return col;
 	}
+
+	public void setCol(int col) {
+		this.col = col;
+	}
+
 	
 	public int getDegrees(){
 		return degrees;
@@ -48,8 +60,18 @@ public class Tile {
 		return tilePortionType[5];
 	}
 	
+	//Getters and setters for board
+	public Board getBoard() {
+		return board;
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+
 	
-	public Tile(String terrainTypeString, int row, int col, int degrees){
+	
+	/*public Tile(String terrainTypeString, int row, int col, int degrees){
 		this.terrainTypeString = terrainTypeString;
 		this.row = row;
 		this.col = col;
@@ -60,7 +82,7 @@ public class Tile {
 		//Rotate if degrees != 0
 		
 		
-	}
+	}*/
 	
 	
 	
