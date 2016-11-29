@@ -1,5 +1,7 @@
 package Game;
 
+import Game.TerrainType;
+
 enum TerrainType {
 	GAMETRAIL, JUNGLE, LAKE, BUFFALO, CROCODILE, DEER, BOAR, DEN, END
 }
@@ -69,13 +71,15 @@ public class Tile {
 		this.board = board;
 	}
 
-	
-	
+	public Tile(TerrainType[] tilePortionType){
+		this.tilePortionType = tilePortionType;
+	}
 	/*public Tile(String terrainTypeString, int row, int col, int degrees){
 		this.terrainTypeString = terrainTypeString;
 		this.row = row;
 		this.col = col;
 		this.degrees = degrees;
+		
 		
 		//Switch to create array of TerrainType
 		
