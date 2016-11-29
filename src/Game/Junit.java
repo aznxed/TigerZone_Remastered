@@ -3,6 +3,7 @@ package Game;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -63,6 +64,12 @@ public class Junit {
 
 		int result = testBoard.placeTile(77, 78, 0, testTile2);
 		assertEquals(result, 1);
+		
+		List<Tile> nbors1 = testBoard.getNeighbors(77, 78);
+		assertEquals(nbors1.size(), 1);
+		
+		List<Tile> nbors2 = testBoard.getNeighbors(77, 77);
+		assertEquals(nbors2.size(), 1);
 	}
 
 }
