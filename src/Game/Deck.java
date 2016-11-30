@@ -5,8 +5,9 @@ import java.util.Queue;
 public class Deck {
 	private Queue<Tile> tileDeck = new ArrayDeque<>();
 
-	public void addTile(Tile tile){
-		tileDeck.add(tile);
+	public void addTile(String tile){
+		Tile adding = new Tile(tile);
+		tileDeck.add(adding);
 	}
 	
 	public Tile getTop(){

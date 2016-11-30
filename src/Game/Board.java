@@ -341,6 +341,13 @@ public class Board {
 	/********************************/
 
 	public int placeTile(int x, int y, int rotation, Tile tile) {
+		List<Integer> validOrients = getValidOrients(x, y, tile);
+		if(!validOrients.contains(rotation)){
+			System.out.println("INVALID, Tile not placed");
+			// 0 = false
+			return 0;
+		}
+		
 		if(rotation != 0) {
 			TerrainType[] rotateArr = new TerrainType[9];
 			if (rotation == 90) {
@@ -375,7 +382,7 @@ public class Board {
 		}
 
 		if (!isValid(x, y, tile)) {
-
+			System.out.println("INVALID, Tile not placed");
 			// 0 = false
 			return 0;
 		}
@@ -436,17 +443,43 @@ public class Board {
 		}
 	}
 	
-	
 	public static void main(String[] args){
 		Board gameBoard = new Board();
-		Tile tile1 = new Tile("JJJJ-");
-		gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, tile1);
-
+		Deck deck = new Deck();
+		//Tile tile1 = new Tile("JJJJ-");
+		//Tile tile2 = new Tile("TJTJ-");
 		
-		Tile tile2 = new Tile("TJTJ-");
-		List<Tile> pos = gameBoard.getPossibleMoves(tile2);
+		deck.addTile("TLTJ-");
+		deck.addTile("TLTTP");
+		deck.addTile("LJTJ-");
+		deck.addTile("JLJL-");
+		deck.addTile("JJTJX");
+		deck.addTile("JLTTB");
+		deck.addTile("TLLT-");
+		
+		//Tile tile1 = new Tile("TLLT-");
+		//gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, tile1);
+		/*
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		*/
+		
+		gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL-1, CENTER_CELL, 90, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL-2, CENTER_CELL, 180, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL, CENTER_CELL+1, 0, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL-1, CENTER_CELL+1, 270, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL, CENTER_CELL+2, 180, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 270, deck.getTop());
+		
+
 		//System.out.println(pos.size());
-		gameBoard.addTile(tile2);
+		//gameBoard.addTile(deck.getTop());
 		//gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 90, tile2);
 		//System.out.println(tile2.getCol());
 		
