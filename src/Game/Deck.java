@@ -16,4 +16,5 @@ public class Deck {
 	public int getSize(){
 		return tileDeck.size();
 	}
+	
 }

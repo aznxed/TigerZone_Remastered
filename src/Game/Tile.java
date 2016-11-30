@@ -12,7 +12,6 @@ public class Tile {
 	private String terrainTypeString;
 	private int degrees = 0;
 	
-
 	private Board board;
 	private TerrainType[] tilePortionType = new TerrainType[9];
 	

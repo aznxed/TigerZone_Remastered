@@ -117,57 +117,14 @@ public class Board {
 			}
 			
 			else{
-				
-				boolean valid = true;
-				// Iterate through all its potential neighbors
-				for (Tile neighbor : nbors) {
-
-					// Check if neighbor is in same row
-					if (neighbor.getRow() == x) {
-						if (neighbor.getCol() > y) {
-							// This is right neighbor
-							if (neighbor.getLeftEdge() != tile.getRightEdge()) {
-								valid = false;
-								// no need to continue checking other
-								// neighbors
-								break;
-							}
-						} else {
-							// This is left neighbor
-							if (neighbor.getRightEdge() != tile.getLeftEdge()) {
-								valid = false;
-								break;
-							}
-						}
-					}
-
-					// If not in the same row, it must be in the same column
-					if (neighbor.getCol() == y) {
-						if (neighbor.getRow() > x) {
-							// This is bottom neighbor
-							if (neighbor.getTopEdge() != tile.getBottomEdge()) {
-								valid = false;
-								break;
-							}
-
-						} else {
-							// This is top neighbor
-							if (neighbor.getBottomEdge() != tile.getTopEdge()) {
-								valid = false;
-								break;
-							}
-						}
-					}
-
-				} // Iterate thru neighbors
-				return valid;
+				return true;
 			}
-
+			
 		}
 	}
 
 	public Tile rotateTile(Tile tile, int degrees) {
-		Tile rotateTile = new Tile(tile.getTilePortionType());
+		Tile rotateTile = new Tile(tile.getTileType());
 
 		if (degrees != 0) {
 			TerrainType[] rotateArr = new TerrainType[9];
@@ -199,7 +156,16 @@ public class Board {
 				rotateArr[8] = tile.getTilePortionType()[2];
 			}
 			rotateTile.setTilePortionType(rotateArr);
+			rotateTile.setDegrees(degrees);
+			rotateTile.setCol(tile.getCol());
+			rotateTile.setRow(tile.getRow());
+			
+			return rotateTile;
 		}
+		rotateTile.setTilePortionType(tile.getTilePortionType());
+		rotateTile.setDegrees(0);
+		rotateTile.setCol(tile.getCol());
+		rotateTile.setRow(tile.getRow());
 		return rotateTile;
 	}
 
@@ -324,16 +290,23 @@ public class Board {
 	}
 
 	public List<Tile> getPossibleMoves(Tile tile) {
+		int count = 0;
 		List<Tile> possibleMoves = new ArrayList<Tile>();
 		for (int i = getTopBound(); i <= getBottomBound(); i++) {
 			for (int j = getLeftBound(); j <= getRightBound(); j++) {
 				if (isValid(i, j, tile)) {
-					tile.setRow(i);
-					tile.setCol(j);
 					List<Integer> validOrients = getValidOrients(i, j, tile);
+					
 					for (int k = 0; k < validOrients.size(); k++) {
-						possibleMoves.add(rotateTile(tile, validOrients.get(k)));
-
+						Tile newTile = new Tile(tile.getTileType());
+						//System.out.println(i);
+						//System.out.println(j);
+						newTile.setRow(i);
+						newTile.setCol(j);
+						System.out.print(i + " ");
+						System.out.println(j);
+						possibleMoves.add(rotateTile(newTile, validOrients.get(k)));
+						
 					}
 				}
 			}
@@ -361,6 +334,7 @@ public class Board {
 		board[x][y] = null;
 		placedTiles.remove(tile);
 	}
+	
 	
 	/********************************/
 	/******* Player Functions *******/
@@ -430,14 +404,50 @@ public class Board {
 		// return true;
 	}
 
+	public void addTile(Tile tile) {
+		if (!(getPossibleMoves(tile).isEmpty())) {
+			Random rand = new Random();
+			List<Tile> getPosMoves = getPossibleMoves(tile);
+			Tile addTile = getPosMoves.get(rand.nextInt(getPosMoves.size()));
+			
+			int x = addTile.getRow();
+			int y = addTile.getCol();
+			System.out.print("Tile placed at " + x + " " + y);
+			Tile tilee = new Tile(tile.getTileType());
+			this.placeTile(x, y, addTile.getDegrees(), tilee);
+			//placedTiles.add(addTile);
+			//addTile.setBoard(this);
+			//board[x][y] = addTile;
+
+			if (x == getTopBound() && x > 0) {
+				setTopBound(x - 1);
+			}
+			if (x == getBottomBound() && x < MAX_ROWS - 1) {
+				setBottomBound(x + 1);
+			}
+			if (y == getLeftBound() && y > 0) {
+				setLeftBound(y - 1);
+			}
+			if (y == getRightBound() && y < MAX_COLS - 1) {
+				setRightBound(y + 1);
+			}
+			
+			
+		}
+	}
+	
 	
 	public static void main(String[] args){
 		Board gameBoard = new Board();
 		Tile tile1 = new Tile("JJJJ-");
 		gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, tile1);
+
+		
 		Tile tile2 = new Tile("TJTJ-");
-		//System.out.println(tile2.getCol());
-		gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 90, tile2);
+		List<Tile> pos = gameBoard.getPossibleMoves(tile2);
+		//System.out.println(pos.size());
+		gameBoard.addTile(tile2);
+		//gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 90, tile2);
 		//System.out.println(tile2.getCol());
 		
 		UI test = new UI();
