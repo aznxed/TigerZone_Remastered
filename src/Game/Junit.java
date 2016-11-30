@@ -45,6 +45,7 @@ public class Junit {
 	static Tile testTile5 = new Tile(tileJ);
 	
 	static Tile testTile6 = new Tile(tileJ, 77, 79, 0);
+	static Tile testTile7 = new Tile(tileTR, 77, 79, 0);
 
 	// Test tiles are being placed on board
 	@Test
@@ -141,15 +142,18 @@ public class Junit {
 		
 		/*System.out.println(testBoard.getBottomBound()); 
 		System.out.println(testBoard.getTopBound());
-		System.out.println(testBoard.getBottomBound());
-		System.out.println(testBoard.getBottomBound());*/
+		System.out.println(testBoard.getRightBound());
+		System.out.println(testBoard.getLeftBound());
+		*/
 		
-		List<Integer> posOrients = testBoard.getValidOrients(77, 79, testTile5);
-		assertEquals(posOrients.size(), 4);
+		List<Integer> posOrients = testBoard.getValidOrients(77, 79, testTile7);
+		assertEquals(posOrients.size(), 1);
 		
-		List<Tile> posMoves = testBoard.getPossibleMoves(testTile6);
-		assertEquals(posMoves.size(), 32);
+		List<Tile> posMoves = testBoard.getPossibleMoves(testTile7);
+		assertEquals(posMoves.size(), 20);
 		
+		
+		System.out.println();
 		System.out.println(testBoard.getBottomBound()); 
 		System.out.println(testBoard.getTopBound());
 		System.out.println(testBoard.getRightBound());

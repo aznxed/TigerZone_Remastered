@@ -12,10 +12,10 @@ public class Board {
 	public static int MAX_ROWS = CENTER_CELL * 2 - 1;
 	public static int MAX_COLS = CENTER_CELL * 2 - 1;
 
-	private int topBound = 76;
-	private int bottomBound = 78;
-	private int leftBound = 76;
-	private int rightBound = 78;
+	private int topBound = 77;
+	private int bottomBound = 77;
+	private int leftBound = 77;
+	private int rightBound = 77;
 
 	public Deck deck = new Deck();
 
