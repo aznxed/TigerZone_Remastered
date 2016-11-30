@@ -343,7 +343,7 @@ public class Board {
 	public int placeTile(int x, int y, int rotation, Tile tile) {
 		List<Integer> validOrients = getValidOrients(x, y, tile);
 		if(!validOrients.contains(rotation)){
-			System.out.println("INVALID, Tile not placed");
+			System.out.println("INVALID Orientation, Tile not placed");
 			// 0 = false
 			return 0;
 		}
@@ -450,33 +450,53 @@ public class Board {
 		//Tile tile2 = new Tile("TJTJ-");
 		
 		deck.addTile("TLTJ-");
-		deck.addTile("TLTTP");
-		deck.addTile("LJTJ-");
-		deck.addTile("JLJL-");
-		deck.addTile("JJTJX");
-		deck.addTile("JLTTB");
+		deck.addTile("TJJT-");
+		deck.addTile("LLJJ-");
+		deck.addTile("LJLJ-");
 		deck.addTile("TLLT-");
+		deck.addTile("JLLJ-");
+		deck.addTile("JLJL-");
+		deck.addTile("LLLL-");
+		deck.addTile("LJTJD");
+		deck.addTile("TLLTB");
+		deck.addTile("TJTT-");
+		deck.addTile("TLTTP");
+		
 		
 		//Tile tile1 = new Tile("TLLT-");
 		//gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, tile1);
-		/*
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		*/
 		
+		
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		gameBoard.addTile(deck.getTop());
+		//gameBoard.addTile(deck.getTop());
+		//gameBoard.addTile(deck.getTop());
+		//gameBoard.addTile(deck.getTop());
+		
+		
+		
+		
+		/*
 		gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 270, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL, CENTER_CELL+1, 90, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL, CENTER_CELL-1, 0, deck.getTop());
 		gameBoard.placeTile(CENTER_CELL-1, CENTER_CELL, 90, deck.getTop());
-		gameBoard.placeTile(CENTER_CELL-2, CENTER_CELL, 180, deck.getTop());
-		gameBoard.placeTile(CENTER_CELL, CENTER_CELL+1, 0, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL, CENTER_CELL-2, 180, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL+2, CENTER_CELL, 0, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL+2, CENTER_CELL-1, 270, deck.getTop());
+		gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL+1, 270, deck.getTop());
 		gameBoard.placeTile(CENTER_CELL-1, CENTER_CELL+1, 270, deck.getTop());
 		gameBoard.placeTile(CENTER_CELL, CENTER_CELL+2, 180, deck.getTop());
-		gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 270, deck.getTop());
-		
+		gameBoard.placeTile(CENTER_CELL-2, CENTER_CELL, 90, deck.getTop());
+		*/
 
 		//System.out.println(pos.size());
 		//gameBoard.addTile(deck.getTop());
