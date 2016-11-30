@@ -92,7 +92,7 @@ public class UI {
 				else {
 					JLabel j1 = new JLabel();
 					ImageIcon II = new ImageIcon(imagePath + "Tile"
-									+ Integer.toString(getType(gameBoard.getBoard()[i][j].getTerrainTypeString()))
+									+ Integer.toString(getType(gameBoard.getBoard()[i][j].getTileType()))
 									+ "."
 									+ Integer.toString(gameBoard.getBoard()[i][j]
 											.getDegrees()) + ".png");
