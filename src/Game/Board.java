@@ -93,13 +93,44 @@ public class Board {
 
 	// Place a Tile
 	public int placeTile(int x, int y, int rotation, Tile tile) {
+		if(rotation != 0) {
+			TerrainType[] rotateArr = new TerrainType[9];
+			if (rotation == 90) {
+				rotateArr[0] = tile.getTilePortionType()[2];
+				rotateArr[1] = tile.getTilePortionType()[5];
+				rotateArr[2] = tile.getTilePortionType()[8];
+				rotateArr[3] = tile.getTilePortionType()[1];
+				rotateArr[4] = tile.getTilePortionType()[4];
+				rotateArr[5] = tile.getTilePortionType()[7];
+				rotateArr[6] = tile.getTilePortionType()[0];
+				rotateArr[7] = tile.getTilePortionType()[3];
+				rotateArr[8] = tile.getTilePortionType()[6];
+			}
+			if (rotation == 180) {
+				for (int i = 0; i < 9; i++) {
+					rotateArr[i] = tile.getTilePortionType()[8 - i];
+				}
+			}
+			if (rotation == 270) {
+				rotateArr[0] = tile.getTilePortionType()[6];
+				rotateArr[1] = tile.getTilePortionType()[3];
+				rotateArr[2] = tile.getTilePortionType()[0];
+				rotateArr[3] = tile.getTilePortionType()[7];
+				rotateArr[4] = tile.getTilePortionType()[4];
+				rotateArr[5] = tile.getTilePortionType()[1];
+				rotateArr[6] = tile.getTilePortionType()[8];
+				rotateArr[7] = tile.getTilePortionType()[5];
+				rotateArr[8] = tile.getTilePortionType()[2];
+			}
+			tile.setTilePortionType(rotateArr);
+			tile.setDegrees(rotation);
+		}
 
 		if (!isValid(x, y, tile)) {
 
 			// 0 = false
 			return 0;
 		}
-
 		// add tile to board
 		// give tile coords
 		placedTiles.add(tile);
@@ -131,12 +162,11 @@ public class Board {
 
 	// Print the Board
 	public int printBoard() {
-
+		
 		return 1;
 	}
 
 	// Get Neighboring Tiles
-	// TEST NOT COMPLETE
 	public List<Tile> getNeighbors(int x, int y) {
 		List<Tile> n = new ArrayList<Tile>();
 
@@ -168,7 +198,6 @@ public class Board {
 	}
 
 	// Can I place this tile here?
-	// TEST NOT COMPLETED
 	public boolean isValid(int x, int y, Tile tile) {
 
 		if (board[x][y] != null) {
@@ -182,60 +211,57 @@ public class Board {
 		else {
 			List<Tile> nbors = getNeighbors(x, y);
 			if (nbors.isEmpty()) {
-
 				return false;
-				
 			}
 			
 			else{
-				return true;
+				
+				boolean valid = true;
+				// Iterate through all its potential neighbors
+				for (Tile neighbor : nbors) {
+
+					// Check if neighbor is in same row
+					if (neighbor.getRow() == x) {
+						if (neighbor.getCol() > y) {
+							// This is right neighbor
+							if (neighbor.getLeftEdge() != tile.getRightEdge()) {
+								valid = false;
+								// no need to continue checking other
+								// neighbors
+								break;
+							}
+						} else {
+							// This is left neighbor
+							if (neighbor.getRightEdge() != tile.getLeftEdge()) {
+								valid = false;
+								break;
+							}
+						}
+					}
+
+					// If not in the same row, it must be in the same column
+					if (neighbor.getCol() == y) {
+						if (neighbor.getRow() > x) {
+							// This is bottom neighbor
+							if (neighbor.getTopEdge() != tile.getBottomEdge()) {
+								valid = false;
+								break;
+							}
+
+						} else {
+							// This is top neighbor
+							if (neighbor.getBottomEdge() != tile.getTopEdge()) {
+								valid = false;
+								break;
+							}
+						}
+					}
+
+				} // Iterate thru neighbors
+				return valid;
 			}
 
 		}
-
-		/*
-		 * // Tile already exists in that position if (board[x][y] != null) {
-		 * return false; }
-		 * 
-		 * // return true if the board is empty if (placedTiles.isEmpty()) {
-		 * return true; }
-		 * 
-		 * // Get the neighbors of this position List<Tile> nbors =
-		 * getNeighbors(x, y);
-		 * 
-		 * // If there are no neighbors, then its not a valid // position in
-		 * which to place a tile. if (nbors.isEmpty()) { return false; }
-		 * 
-		 * // Ensure that all the neighbors are compatible. boolean valid =
-		 * true; // Iterate through all its potential neighbors for (Tile
-		 * neighbor : nbors) {
-		 * 
-		 * // Check if neighbor is in same row if (neighbor.getRow() == x) { if
-		 * (neighbor.getCol() > y) { // This is right neighbor if
-		 * (neighbor.getLeftEdge() != tile.getRightEdge()) { valid = false; //
-		 * no need to continue checking other // neighbors break; } } else { //
-		 * This is left neighbor if (neighbor.getRightEdge() !=
-		 * tile.getLeftEdge()) { valid = false; break; } } }
-		 * 
-		 * // If not in the same row, it must be in the same column if
-		 * (neighbor.getCol() == y) { if (neighbor.getRow() > x) { // This is
-		 * bottom neighbor if (neighbor.getTopEdge() != tile.getBottomEdge()) {
-		 * valid = false; break; }
-		 * 
-		 * } else { // This is top neighbor if (neighbor.getBottomEdge() !=
-		 * tile.getTopEdge()) { valid = false; break; } } }
-		 * 
-		 * } // Iterate thru neighbors return valid;
-		 * 
-		 * /* // Space already has tile if (board[x][y] != null) { return false;
-		 * }
-		 * 
-		 * List<Tile> nbors = getNeighbors(x, y);
-		 * 
-		 * // No neighbors if (nbors.isEmpty()) { return false; }
-		 * 
-		 * return true;
-		 */
 	}
 
 	public Tile rotateTile(Tile tile, int degrees) {
@@ -418,6 +444,11 @@ public class Board {
 		Board gameBoard = new Board();
 		Tile tile1 = new Tile("JJJJ-");
 		gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, tile1);
+		Tile tile2 = new Tile("TJTJ-");
+		//System.out.println(tile2.getCol());
+		gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 90, tile2);
+		//System.out.println(tile2.getCol());
+		
 		
 		UI test = new UI();
 		test.createUIBoard(gameBoard);

@@ -10,7 +10,7 @@ public class Tile {
 	private int row;
 	private int col;
 	private String terrainTypeString;
-	private int degrees;
+	private int degrees = 0;
 	
 	//Every tile has to be associated with a board object 
 	private Board board;
@@ -42,6 +42,10 @@ public class Tile {
 
 	public int getDegrees(){
 		return degrees;
+	}
+	
+	public void setDegrees(int degrees){
+		this.degrees = degrees;
 	}
 	
 	public String getTileType(){
@@ -85,8 +89,6 @@ public class Tile {
 		return type;
 	}
 	
-	
-
 	public Tile(TerrainType[] tilePortionType){
 		this.tilePortionType = tilePortionType;
 	}
@@ -277,9 +279,6 @@ public class Tile {
 		return empty;
 	}	
 
-	
-	
-	
 	/*public Tile(String terrainTypeString, int row, int col, int degrees){
 		
 		this.terrainTypeString = terrainTypeString;
