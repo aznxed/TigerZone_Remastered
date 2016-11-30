@@ -124,7 +124,7 @@ public class Junit {
 	}
 	
 	//Test getValidOrients and getPossibleMoves
-	@Test
+	/*@Test
 	public void testG(){
 		
 		//Tile rotTile90 = testBoard.rotateTile(testTile1, 180);
@@ -150,7 +150,7 @@ public class Junit {
 		System.out.println(testBoard.getBottomBound());
 		System.out.println(testBoard.getBottomBound());
 		
-	}
+	}*/
 	
 	
 	
