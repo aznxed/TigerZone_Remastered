@@ -250,6 +250,8 @@ public class Tile {
 		return empty;
 	}	
 	
+	
+	
 	/*public Tile(String terrainTypeString, int row, int col, int degrees){
 		this.terrainTypeString = terrainTypeString;
 		this.row = row;
