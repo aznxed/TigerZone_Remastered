@@ -274,6 +274,8 @@ public class Tile {
 	}	
 
 	
+	
+	
 	/*public Tile(String terrainTypeString, int row, int col, int degrees){
 		
 		this.terrainTypeString = terrainTypeString;
