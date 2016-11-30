@@ -171,72 +171,64 @@ public class Board {
 	// TEST NOT COMPLETED
 	public boolean isValid(int x, int y, Tile tile) {
 
-		// Tile already exists in that position
 		if (board[x][y] != null) {
 			return false;
 		}
-
-		// return true if the board is empty
+		
 		if (placedTiles.isEmpty()) {
 			return true;
 		}
 
-		// Get the neighbors of this position
-		List<Tile> nbors = getNeighbors(x, y);
+		else {
+			List<Tile> nbors = getNeighbors(x, y);
+			if (nbors.isEmpty()) {
 
-		// If there are no neighbors, then its not a valid
-		// position in which to place a tile.
-		if (nbors.isEmpty()) {
-			return false;
+				return false;
+				
+			}
+			
+			else{
+				return true;
+			}
+
 		}
 
-		// Ensure that all the neighbors are compatible.
-		boolean valid = true;
-		// Iterate through all its potential neighbors
-		for (Tile neighbor : nbors) {
-
-			// Check if neighbor is in same row
-			if (neighbor.getRow() == x) {
-				if (neighbor.getCol() > y) {
-					// This is right neighbor
-					if (neighbor.getLeftEdge() != tile.getRightEdge()) {
-						valid = false;
-						// no need to continue checking other
-						// neighbors
-						break;
-					}
-				} else {
-					// This is left neighbor
-					if (neighbor.getRightEdge() != tile.getLeftEdge()) {
-						valid = false;
-						break;
-					}
-				}
-			}
-
-			// If not in the same row, it must be in the same column
-			if (neighbor.getCol() == y) {
-				if (neighbor.getRow() > x) {
-					// This is bottom neighbor
-					if (neighbor.getTopEdge() != tile.getBottomEdge()) {
-						valid = false;
-						break;
-					}
-
-				} else {
-					// This is top neighbor
-					if (neighbor.getBottomEdge() != tile.getTopEdge()) {
-						valid = false;
-						break;
-					}
-				}
-			}
-
-		} // Iterate thru neighbors
-		return valid;
-
 		/*
-		 * // Space already has tile if (board[x][y] != null) { return false; }
+		 * // Tile already exists in that position if (board[x][y] != null) {
+		 * return false; }
+		 * 
+		 * // return true if the board is empty if (placedTiles.isEmpty()) {
+		 * return true; }
+		 * 
+		 * // Get the neighbors of this position List<Tile> nbors =
+		 * getNeighbors(x, y);
+		 * 
+		 * // If there are no neighbors, then its not a valid // position in
+		 * which to place a tile. if (nbors.isEmpty()) { return false; }
+		 * 
+		 * // Ensure that all the neighbors are compatible. boolean valid =
+		 * true; // Iterate through all its potential neighbors for (Tile
+		 * neighbor : nbors) {
+		 * 
+		 * // Check if neighbor is in same row if (neighbor.getRow() == x) { if
+		 * (neighbor.getCol() > y) { // This is right neighbor if
+		 * (neighbor.getLeftEdge() != tile.getRightEdge()) { valid = false; //
+		 * no need to continue checking other // neighbors break; } } else { //
+		 * This is left neighbor if (neighbor.getRightEdge() !=
+		 * tile.getLeftEdge()) { valid = false; break; } } }
+		 * 
+		 * // If not in the same row, it must be in the same column if
+		 * (neighbor.getCol() == y) { if (neighbor.getRow() > x) { // This is
+		 * bottom neighbor if (neighbor.getTopEdge() != tile.getBottomEdge()) {
+		 * valid = false; break; }
+		 * 
+		 * } else { // This is top neighbor if (neighbor.getBottomEdge() !=
+		 * tile.getTopEdge()) { valid = false; break; } } }
+		 * 
+		 * } // Iterate thru neighbors return valid;
+		 * 
+		 * /* // Space already has tile if (board[x][y] != null) { return false;
+		 * }
 		 * 
 		 * List<Tile> nbors = getNeighbors(x, y);
 		 * 

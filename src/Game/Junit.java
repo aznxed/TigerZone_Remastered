@@ -36,6 +36,10 @@ public class Junit {
 	static TerrainType[] tileJ = { TerrainType.JUNGLE, TerrainType.JUNGLE, TerrainType.JUNGLE,
 			TerrainType.JUNGLE, TerrainType.JUNGLE, TerrainType.JUNGLE, 
 			TerrainType.JUNGLE, TerrainType.JUNGLE,TerrainType.JUNGLE };
+	
+	static TerrainType[] tileMRJ = { TerrainType.JUNGLE, TerrainType.GAMETRAIL, TerrainType.JUNGLE, 
+	        TerrainType.GAMETRAIL, TerrainType.GAMETRAIL, TerrainType.GAMETRAIL, 
+	        TerrainType.JUNGLE, TerrainType.GAMETRAIL, TerrainType.JUNGLE };
 
 	static Board testBoard = new Board();
 	static Tile testTile1 = new Tile(tileTR);
@@ -46,6 +50,7 @@ public class Junit {
 	
 	static Tile testTile6 = new Tile(tileJ, 77, 79, 0);
 	static Tile testTile7 = new Tile(tileTR, 77, 79, 0);
+	static Tile testTile8 = new Tile(tileMRJ, 77, 79, 0);
 
 	// Test tiles are being placed on board
 	@Test
@@ -146,11 +151,11 @@ public class Junit {
 		System.out.println(testBoard.getLeftBound());
 		*/
 		
-		List<Integer> posOrients = testBoard.getValidOrients(77, 79, testTile7);
-		assertEquals(posOrients.size(), 1);
+		List<Integer> posOrients = testBoard.getValidOrients(79, 79, testTile8);
+		assertEquals(posOrients.size(), 4);
 		
-		List<Tile> posMoves = testBoard.getPossibleMoves(testTile7);
-		assertEquals(posMoves.size(), 20);
+		List<Tile> posMoves = testBoard.getPossibleMoves(testTile8);
+		assertEquals(posMoves.size(), 4);
 		
 		
 		System.out.println();
