@@ -96,7 +96,10 @@ public class Tile {
 		this.tilePortionType = tilePortionType;
 	}
 	
-
+	public Tile(String terrainTypeString){
+		this.tilePortionType = returnTileTerrain(terrainTypeString);
+	}
+	
 	public TerrainType[] returnTileTerrain(String terrainType){
 		switch(terrainType){
 			case"JJJJ-":	
