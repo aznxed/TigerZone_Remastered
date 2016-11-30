@@ -124,7 +124,7 @@ public class Junit {
 	}
 	
 	//Test getValidOrients and getPossibleMoves
-	/*@Test
+	@Test
 	public void testG(){
 		
 		//Tile rotTile90 = testBoard.rotateTile(testTile1, 180);
@@ -134,10 +134,15 @@ public class Junit {
 		//I tried a bunch of different combinations by just changing the coords
 		//and the tile
 		
-		testBoard.setBottomBound(0);
-		testBoard.setTopBound(0);
-		testBoard.setLeftBound(0);
-		testBoard.setRightBound(0);
+		/*testBoard.setBottomBound(76);
+		testBoard.setTopBound(79);
+		testBoard.setLeftBound(75);
+		testBoard.setRightBound(80);*/
+		
+		/*System.out.println(testBoard.getBottomBound()); 
+		System.out.println(testBoard.getTopBound());
+		System.out.println(testBoard.getBottomBound());
+		System.out.println(testBoard.getBottomBound());*/
 		
 		List<Integer> posOrients = testBoard.getValidOrients(77, 79, testTile5);
 		assertEquals(posOrients.size(), 4);
@@ -147,10 +152,10 @@ public class Junit {
 		
 		System.out.println(testBoard.getBottomBound()); 
 		System.out.println(testBoard.getTopBound());
-		System.out.println(testBoard.getBottomBound());
-		System.out.println(testBoard.getBottomBound());
+		System.out.println(testBoard.getRightBound());
+		System.out.println(testBoard.getLeftBound());
 		
-	}*/
+	}
 	
 	
 	

@@ -12,10 +12,10 @@ public class Board {
 	public static int MAX_ROWS = CENTER_CELL * 2 - 1;
 	public static int MAX_COLS = CENTER_CELL * 2 - 1;
 
-	private int topBound;
-	private int bottomBound;
-	private int leftBound;
-	private int rightBound;
+	private int topBound = 76;
+	private int bottomBound = 78;
+	private int leftBound = 76;
+	private int rightBound = 78;
 
 	public Deck deck = new Deck();
 
@@ -111,13 +111,13 @@ public class Board {
 		if (x == getTopBound() && x > 0) {
 			setTopBound(x - 1);
 		}
-		if (x == getBottomBound() && x < MAX_ROWS -1) {
+		if (x == getBottomBound() && x < MAX_ROWS - 1) {
 			setBottomBound(x + 1);
 		}
 		if (y == getLeftBound() && y > 0) {
 			setLeftBound(y - 1);
 		}
-		if (y == getRightBound() && y < MAX_COLS-1) {
+		if (y == getRightBound() && y < MAX_COLS - 1) {
 			setRightBound(y + 1);
 		}
 
@@ -249,35 +249,37 @@ public class Board {
 	public Tile rotateTile(Tile tile, int degrees) {
 		Tile rotateTile = new Tile(tile.getTilePortionType());
 
-		TerrainType[] rotateArr = new TerrainType[9];
-		if (degrees == 90) {
-			rotateArr[0] = tile.getTilePortionType()[2];
-			rotateArr[1] = tile.getTilePortionType()[5];
-			rotateArr[2] = tile.getTilePortionType()[8];
-			rotateArr[3] = tile.getTilePortionType()[1];
-			rotateArr[4] = tile.getTilePortionType()[4];
-			rotateArr[5] = tile.getTilePortionType()[7];
-			rotateArr[6] = tile.getTilePortionType()[0];
-			rotateArr[7] = tile.getTilePortionType()[3];
-			rotateArr[8] = tile.getTilePortionType()[6];
-		}
-		if (degrees == 180) {
-			for (int i = 0; i < 9; i++) {
-				rotateArr[i] = tile.getTilePortionType()[8 - i];
+		if (degrees != 0) {
+			TerrainType[] rotateArr = new TerrainType[9];
+			if (degrees == 90) {
+				rotateArr[0] = tile.getTilePortionType()[2];
+				rotateArr[1] = tile.getTilePortionType()[5];
+				rotateArr[2] = tile.getTilePortionType()[8];
+				rotateArr[3] = tile.getTilePortionType()[1];
+				rotateArr[4] = tile.getTilePortionType()[4];
+				rotateArr[5] = tile.getTilePortionType()[7];
+				rotateArr[6] = tile.getTilePortionType()[0];
+				rotateArr[7] = tile.getTilePortionType()[3];
+				rotateArr[8] = tile.getTilePortionType()[6];
 			}
+			if (degrees == 180) {
+				for (int i = 0; i < 9; i++) {
+					rotateArr[i] = tile.getTilePortionType()[8 - i];
+				}
+			}
+			if (degrees == 270) {
+				rotateArr[0] = tile.getTilePortionType()[6];
+				rotateArr[1] = tile.getTilePortionType()[3];
+				rotateArr[2] = tile.getTilePortionType()[0];
+				rotateArr[3] = tile.getTilePortionType()[7];
+				rotateArr[4] = tile.getTilePortionType()[4];
+				rotateArr[5] = tile.getTilePortionType()[1];
+				rotateArr[6] = tile.getTilePortionType()[8];
+				rotateArr[7] = tile.getTilePortionType()[5];
+				rotateArr[8] = tile.getTilePortionType()[2];
+			}
+			rotateTile.setTilePortionType(rotateArr);
 		}
-		if (degrees == 270) {
-			rotateArr[0] = tile.getTilePortionType()[6];
-			rotateArr[1] = tile.getTilePortionType()[3];
-			rotateArr[2] = tile.getTilePortionType()[0];
-			rotateArr[3] = tile.getTilePortionType()[7];
-			rotateArr[4] = tile.getTilePortionType()[4];
-			rotateArr[5] = tile.getTilePortionType()[1];
-			rotateArr[6] = tile.getTilePortionType()[8];
-			rotateArr[7] = tile.getTilePortionType()[5];
-			rotateArr[8] = tile.getTilePortionType()[2];
-		}
-		rotateTile.setTilePortionType(rotateArr);
 		return rotateTile;
 	}
 
