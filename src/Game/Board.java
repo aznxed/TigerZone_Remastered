@@ -421,5 +421,13 @@ public class Board {
 
 		return possibleMoves;
 	}
+	
+	public static void main(String[] args){
+		Board gameBoard = new Board();
+		
+		
+		UI test = new UI();
+		test.createUIBoard(gameBoard);
+	}
 
 }
