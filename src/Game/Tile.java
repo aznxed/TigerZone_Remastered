@@ -17,6 +17,9 @@ public class Tile {
 	
 	private TerrainType[] tilePortionType = new TerrainType[9];
 	
+	//
+	private int type;
+	
 	/*******************************************/
 	/******* Getter and Setter Functions *******/
 	/*******************************************/
@@ -69,11 +72,31 @@ public class Tile {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
+	
+	public TerrainType[] getTilePortionType() {
+		return tilePortionType;
+	}
+
+	public void setTilePortionType(TerrainType[] tilePortionType) {
+		this.tilePortionType = tilePortionType;
+	}
+	
+	public int getType() {
+		return type;
+	}
+	
+	
 
 	public Tile(TerrainType[] tilePortionType){
 		this.tilePortionType = tilePortionType;
 	}
 	
+
+	public Tile(TerrainType[] tilePortionType, int row, int col, int degrees){
+		this.tilePortionType = tilePortionType;
+	}
+	
+
 	public TerrainType[] returnTileTerrain(String terrainType){
 		switch(terrainType){
 			case"JJJJ-":	
@@ -249,10 +272,12 @@ public class Tile {
 		TerrainType[] empty = {}; 
 		return empty;
 	}	
+
 	
 	
 	
 	/*public Tile(String terrainTypeString, int row, int col, int degrees){
+		
 		this.terrainTypeString = terrainTypeString;
 		this.row = row;
 		this.col = col;

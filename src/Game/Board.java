@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import Game.Tile;
+import Game.TerrainType;
 
 public class Board {
 	// Boundaries of the Board
@@ -93,13 +94,12 @@ public class Board {
 	// Place a Tile
 	public int placeTile(int x, int y, int rotation, Tile tile) {
 
-		
-		if (!isValid(x, y, tile)) { 
-			
-			//0 = false
-			return 0; 
+		if (!isValid(x, y, tile)) {
+
+			// 0 = false
+			return 0;
 		}
-		 
+
 		// add tile to board
 		// give tile coords
 		placedTiles.add(tile);
@@ -107,6 +107,19 @@ public class Board {
 		tile.setCol(y);
 		tile.setRow(x);
 		tile.setBoard(this);
+
+		if (x == getTopBound() && x > 0) {
+			setTopBound(x - 1);
+		}
+		if (x == getBottomBound() && x < MAX_ROWS -1) {
+			setBottomBound(x + 1);
+		}
+		if (y == getLeftBound() && y > 0) {
+			setLeftBound(y - 1);
+		}
+		if (y == getRightBound() && y < MAX_COLS-1) {
+			setRightBound(y + 1);
+		}
 
 		return 1;
 		// return true;
@@ -231,6 +244,180 @@ public class Board {
 		 * 
 		 * return true;
 		 */
+	}
+
+	public Tile rotateTile(Tile tile, int degrees) {
+		Tile rotateTile = new Tile(tile.getTilePortionType());
+
+		TerrainType[] rotateArr = new TerrainType[9];
+		if (degrees == 90) {
+			rotateArr[0] = tile.getTilePortionType()[2];
+			rotateArr[1] = tile.getTilePortionType()[5];
+			rotateArr[2] = tile.getTilePortionType()[8];
+			rotateArr[3] = tile.getTilePortionType()[1];
+			rotateArr[4] = tile.getTilePortionType()[4];
+			rotateArr[5] = tile.getTilePortionType()[7];
+			rotateArr[6] = tile.getTilePortionType()[0];
+			rotateArr[7] = tile.getTilePortionType()[3];
+			rotateArr[8] = tile.getTilePortionType()[6];
+		}
+		if (degrees == 180) {
+			for (int i = 0; i < 9; i++) {
+				rotateArr[i] = tile.getTilePortionType()[8 - i];
+			}
+		}
+		if (degrees == 270) {
+			rotateArr[0] = tile.getTilePortionType()[6];
+			rotateArr[1] = tile.getTilePortionType()[3];
+			rotateArr[2] = tile.getTilePortionType()[0];
+			rotateArr[3] = tile.getTilePortionType()[7];
+			rotateArr[4] = tile.getTilePortionType()[4];
+			rotateArr[5] = tile.getTilePortionType()[1];
+			rotateArr[6] = tile.getTilePortionType()[8];
+			rotateArr[7] = tile.getTilePortionType()[5];
+			rotateArr[8] = tile.getTilePortionType()[2];
+		}
+		rotateTile.setTilePortionType(rotateArr);
+		return rotateTile;
+	}
+
+	public List<Integer> getValidOrients(int x, int y, Tile tile) {
+		List<Integer> validOrients = new ArrayList<Integer>();
+
+		List<Tile> nbors = getNeighbors(x, y);
+
+		// Add possible orientation to list
+		validOrients.add(0);
+		validOrients.add(90);
+		validOrients.add(180);
+		validOrients.add(270);
+
+		// For each neighboring tile, check if sides match for each orientation
+		// If not, remove from validOrients
+		for (int i = 0; i < nbors.size(); i++) {
+			Tile nTile = nbors.get(i);
+
+			if (validOrients.isEmpty()) {
+				break;
+			}
+			// Check if its in same row
+			if (nTile.getRow() == x) {
+				if (nTile.getCol() > y) {
+					// This is right neighbor
+					if (nTile.getLeftEdge() != tile.getRightEdge()) {
+						if (validOrients.contains(0)) {
+							validOrients.remove(Integer.valueOf(0));
+						}
+					}
+					if (nTile.getLeftEdge() != tile.getBottomEdge()) {
+						if (validOrients.contains(90)) {
+							validOrients.remove(Integer.valueOf(90));
+						}
+					}
+					if (nTile.getLeftEdge() != tile.getLeftEdge()) {
+						if (validOrients.contains(180)) {
+							validOrients.remove(Integer.valueOf(180));
+						}
+					}
+					if (nTile.getLeftEdge() != tile.getTopEdge()) {
+						if (validOrients.contains(270)) {
+							validOrients.remove(Integer.valueOf(270));
+						}
+					}
+				} else {
+					// This is left neighbor
+					if (nTile.getRightEdge() != tile.getLeftEdge()) {
+						if (validOrients.contains(0)) {
+							validOrients.remove(Integer.valueOf(0));
+						}
+					}
+					if (nTile.getRightEdge() != tile.getTopEdge()) {
+						if (validOrients.contains(90)) {
+							validOrients.remove(Integer.valueOf(90));
+						}
+					}
+					if (nTile.getRightEdge() != tile.getRightEdge()) {
+						if (validOrients.contains(180)) {
+							validOrients.remove(Integer.valueOf(180));
+						}
+					}
+					if (nTile.getRightEdge() != tile.getBottomEdge()) {
+						if (validOrients.contains(270)) {
+							validOrients.remove(Integer.valueOf(270));
+						}
+					}
+				}
+			}
+
+			if (nTile.getCol() == y) {
+				if (nTile.getRow() > x) {
+					// This is bottom neighbor
+					if (nTile.getTopEdge() != tile.getBottomEdge()) {
+						if (validOrients.contains(0)) {
+							validOrients.remove(Integer.valueOf(0));
+						}
+					}
+					if (nTile.getTopEdge() != tile.getLeftEdge()) {
+						if (validOrients.contains(90)) {
+							validOrients.remove(Integer.valueOf(90));
+						}
+					}
+					if (nTile.getTopEdge() != tile.getTopEdge()) {
+						if (validOrients.contains(180)) {
+							validOrients.remove(Integer.valueOf(180));
+						}
+					}
+					if (nTile.getTopEdge() != tile.getRightEdge()) {
+						if (validOrients.contains(270)) {
+							validOrients.remove(Integer.valueOf(270));
+						}
+					}
+				} else {
+					// This is top neighbor
+					if (nTile.getBottomEdge() != tile.getTopEdge()) {
+						if (validOrients.contains(0)) {
+							validOrients.remove(Integer.valueOf(0));
+						}
+					}
+					if (nTile.getBottomEdge() != tile.getRightEdge()) {
+						if (validOrients.contains(90)) {
+							validOrients.remove(Integer.valueOf(90));
+						}
+					}
+					if (nTile.getBottomEdge() != tile.getBottomEdge()) {
+						if (validOrients.contains(180)) {
+							validOrients.remove(Integer.valueOf(180));
+						}
+					}
+					if (nTile.getBottomEdge() != tile.getLeftEdge()) {
+						if (validOrients.contains(270)) {
+							validOrients.remove(Integer.valueOf(270));
+						}
+					}
+				}
+			}
+		}
+
+		return validOrients;
+	}
+
+	public List<Tile> getPossibleMoves(Tile tile) {
+		List<Tile> possibleMoves = new ArrayList<Tile>();
+		for (int i = getTopBound(); i <= getBottomBound(); i++) {
+			for (int j = getLeftBound(); j <= getRightBound(); j++) {
+				if (isValid(i, j, tile)) {
+					tile.setRow(i);
+					tile.setCol(j);
+					List<Integer> validOrients = getValidOrients(i, j, tile);
+					for (int k = 0; k < validOrients.size(); k++) {
+						possibleMoves.add(rotateTile(tile, validOrients.get(k)));
+
+					}
+				}
+			}
+		}
+
+		return possibleMoves;
 	}
 
 }
