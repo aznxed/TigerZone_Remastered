@@ -413,5 +413,14 @@ public class Board {
 
 		return possibleMoves;
 	}
+	
+	public static void main(String[] args){
+		Board gameBoard = new Board();
+		Tile tile1 = new Tile("JJJJ-");
+		gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, tile1);
+		
+		UI test = new UI();
+		test.createUIBoard(gameBoard);
+	}
 
 }

@@ -71,7 +71,7 @@ public class UI {
 	}
 	
 	public void createUIBoard(Board gameBoard){
-		String imagePath = "src/main/CarcassonneTiles/";
+		String imagePath = "src/images/";
 		JFrame frame = new JFrame();
 		frame.setPreferredSize(new Dimension(800, 1000));
 	

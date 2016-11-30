@@ -97,6 +97,7 @@ public class Tile {
 	}
 	
 	public Tile(String terrainTypeString){
+		this.terrainTypeString = terrainTypeString;
 		this.tilePortionType = returnTileTerrain(terrainTypeString);
 	}
 	
