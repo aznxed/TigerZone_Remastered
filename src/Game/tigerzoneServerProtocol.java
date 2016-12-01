@@ -195,25 +195,36 @@ public class tigerzoneServerProtocol {
         	currentTile = deck[moveNum - 1];
         	//Send Move to player
         	botMove = serverBot.makeMove((gameID ? "B" : "A"), moveTime, currentTile);
-    		//if ((playerMove.meepPos) != -1){
-    			theOutput = moveMess((gameID ? "A" : "B"), moveTime, moveNum, currentTile);
-    		/*}
-    		else {
-        		theOutput = "GAME " + (gameID ? "A" : "B") + " MOVE " + moveNum + " UNPLACEABLE PASS";
-    		}*/
+    		theOutput = moveMess((gameID ? "A" : "B"), moveTime, moveNum, currentTile);
     		moveStartTime = System.currentTimeMillis();
-        	//Send Move to bot
             state = SentMakeAMove;
         }
         
         //Send Move Opponent Made and Process Player Move
         else if (state == SentMakeAMove) {
         	getReply = false;
-        	//Sent botmove to player
-        	theOutput = "GAME " + (gameID ? "B" : "A") + " MOVE " + moveNum + " PLAYER " + botID + " PLACED "
-        					+ currentTile + " AT " + botMove.xPos + " " + botMove.yPos + " " + botMove.rot;
-        	if(!(botMove.meep).equals("")){
-        		theOutput = theOutput + " " + botMove.meep + " " + botMove.meepPos;
+        	//Set output Message to botMove
+        	theOutput = "GAME " + (gameID ? "B" : "A") + " MOVE " + moveNum + " PLAYER " + botID;
+        	//Bot move could not be made output pass
+        	if (botMove.meep.equals("PASSED")) {
+        		theOutput = theOutput + " TILE " + currentTile + " UNPLACEABLE PASSED";
+        	}
+        	//Output tile placed
+        	else {
+        		theOutput = theOutput + " PLACED "
+    					+ currentTile + " AT " + botMove.xPos + " " + botMove.yPos + " " + botMove.rot;
+        		//Add Tiger and Position to output message
+            	if(botMove.meep.equals("TIGER")){
+            		theOutput = theOutput + " " + botMove.meep + " " + botMove.meepPos;
+            	}
+            	//Add crocodile to output message
+            	if(botMove.meep.equals("CROCODILE")){
+            		theOutput = theOutput + " CROCODILE";
+            	}
+            	//Add none to output message
+            	if(botMove.meep.equals("")){
+            		theOutput = theOutput + " NONE";
+            	}
         	}
         	if (deck.length > moveNum) {
         		state = StartMatch;
