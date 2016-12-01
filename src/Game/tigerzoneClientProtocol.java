@@ -160,7 +160,12 @@ public class tigerzoneClientProtocol {
         		if ((playerMove.meepPos) != -1){
             		theOutput = theOutput + " PLACE " + split[12]+ " AT "
             					+ playerMove.xPos + " " + playerMove.yPos + " " + playerMove.rot;
-                	if((playerMove.meep).equals("TIGER") && tigerMeep > 0) {
+            		//HardCoded Tiger Placement
+            		if(Integer.valueOf(split[10]) == 1) {
+                		theOutput = theOutput + " " + "TIGER" + " " + "1";
+                		tigerMeep--;
+            		}
+            		else if((playerMove.meep).equals("TIGER") && tigerMeep > 0) {
                 		theOutput = theOutput + " " + playerMove.meep + " " + playerMove.meepPos;
                 		tigerMeep--;
                 	}
