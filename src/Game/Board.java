@@ -439,6 +439,10 @@ public class Board {
 				setRightBound(y + 1);
 			}
 			tempMove = new move(x, y, addTile.getDegrees(), "", 0);
+			if (tile.getTilePortionType()[4] == (TerrainType.DEN)){
+				tempMove.meepPos = 5;
+				tempMove.meep = "TIGER";
+			}
 		}
 		//Possible move list is empty
 		else {
