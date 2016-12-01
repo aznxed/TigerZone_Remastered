@@ -27,7 +27,7 @@ public class AI {
 		}
 		//Add a tile to the Deck
 		public void addDeck(String tile){
-			System.out.println("Add " + tile + " to deck");
+			debugPrint.out("Add " + tile + " to deck");
 			deckA.addTile(tile);
 			deckB.addTile(tile);
 			return;
@@ -88,7 +88,7 @@ public class AI {
 			}
 			//Translate x and y coordinates and rotation
 			move currMove = new move(tempMove2.yPos - 77, 77 - tempMove2.xPos , tempMove2.rot, tempMove2.meep, tempMove2.meepPos);
-			System.out.println("Got a move in: " + (System.currentTimeMillis() - startTime));
+			debugPrint.out("Got a move in: " + (System.currentTimeMillis() - startTime));
 			return currMove;
 		}
 		

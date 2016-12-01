@@ -438,7 +438,7 @@ public class Board {
 			if (y == getRightBound() && y < MAX_COLS - 1) {
 				setRightBound(y + 1);
 			}
-			tempMove = new move(x, y, addTile.getDegrees(), "", -1);
+			tempMove = new move(x, y, addTile.getDegrees(), "", 0);
 		}
 		//Possible move list is empty
 		else {

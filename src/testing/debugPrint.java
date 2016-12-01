@@ -1,7 +1,7 @@
 package testing;
 
 public class debugPrint {
-	private boolean debugEnable = true;
+	private boolean debugEnable = false;
 
 	public void out(String message) {
 		if (debugEnable) {

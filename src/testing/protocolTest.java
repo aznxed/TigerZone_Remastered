@@ -17,8 +17,10 @@ public class protocolTest {
 		tigerzoneClientProtocol playerA = new tigerzoneClientProtocol();
 		
 		while (!stop) {
-			aOut = playerA.processMessage(sOut);
-			System.out.println("PlayerA: " + aOut + "\n");
+			if (sOut != null) {
+				aOut = playerA.processMessage(sOut);
+				System.out.println("PlayerA: " + aOut + "\n");
+			}
 			sOut = serverP.processInput(aOut);
 			System.out.println("ServerA: " + sOut);
 			try {
