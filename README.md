@@ -7,3 +7,6 @@ Marisa Fernandez - Marisa Fernandez
 Skyler Burgoyne - smburgoyne
 Ryan Burroughs - 
 Luc Olsthoorn - Luc-Olsthoorn
+
+JUnit Tests
+TODO:
