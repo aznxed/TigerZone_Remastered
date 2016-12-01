@@ -84,6 +84,7 @@ public class tigerzoneClientProtocol {
     	    playerPassword = "password";
     	}
         if (theInput == null){
+        	System.out.println("ERROR CLIENT NULL INPUT");
         	return null;
         }
         String theOutput = null;
@@ -139,6 +140,7 @@ public class tigerzoneClientProtocol {
         		//split[6] = y position
         		//split[7] = rotation
         		AI.initBoards();
+        		AI.initDecks();
         		AI.AIProcess(3);
                 AI.placeFirstTile(split[3], Integer.valueOf(split[5]), Integer.valueOf(split[6]), Integer.valueOf(split[7]));
                 tigerMeep = 7;
@@ -146,7 +148,7 @@ public class tigerzoneClientProtocol {
         	else if (split[0].equals("THE")) {
         		for (int i = 0; i < Integer.valueOf(split[2]); i++) {
         			//Add tile to deck
-        			//AI.addDeck(split[6 + i]);
+        			AI.addDeck(split[6 + i]);
         		}
         	}
         	else if (split[0].equals("MATCH")) {

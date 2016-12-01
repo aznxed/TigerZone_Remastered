@@ -163,6 +163,11 @@ public class tigerzoneServerProtocol {
         else if (state == SentStartTile) {
         	getReply = false;
             theOutput = "THE REMAINING " + deck.length + " TILES ARE [ " + tileString + " ]";
+            serverBot.initDecks();
+            //Add Tiles to bot deck
+            for (int i = 0; i < deck.length; i++){
+                serverBot.addDeck(deck[i]);
+            }
             state = SentRemainingTiles;
         }
         

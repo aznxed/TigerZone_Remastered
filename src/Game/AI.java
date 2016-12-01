@@ -3,6 +3,7 @@ package Game;
 import Game.Board;
 import Game.Tile;
 import Game.UI;
+import testing.debugPrint;
 
 import java.util.Random;
 
@@ -15,9 +16,13 @@ public class AI {
 		private Deck deckA;
 		private Deck deckB;
 		
+		private debugPrint debugPrint = new debugPrint();
+		
 		private String firstGame = "";
 	
-		public void initDeck(){
+		public void initDecks(){
+			deckA = new Deck();
+			deckB = new Deck();
 			return;
 		}
 		//Add a tile to the Deck
@@ -69,15 +74,16 @@ public class AI {
 			Tile newTile = new Tile(tile);
 			move tempMove2;
 			if (game.equals(firstGame)){
-				if (newTile != boardA.deck.getTop()){
+				debugPrint.out("---------------" + boardA.deck.getSize());
+				/*if (newTile.equals(boardA.deck.getTop())){
 					System.out.println("ERROR Tile Delt doesn't equal top tile of deck");
-				}
+				}*/
 				tempMove2 = boardA.addTile(newTile);
 			}
 			else {
-				if (newTile != boardB.deck.getTop()){
+				/*if (newTile.equals(boardB.deck.getTop())){
 					System.out.println("ERROR Tile Delt doesn't equal top tile of deck");
-				}
+				}*/
 				tempMove2 = boardB.addTile(newTile);
 			}
 			//Translate x and y coordinates and rotation
