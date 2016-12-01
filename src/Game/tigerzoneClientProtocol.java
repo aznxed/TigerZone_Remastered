@@ -139,8 +139,7 @@ public class tigerzoneClientProtocol {
         		//split[7] = rotation
         		AI.initBoards();
         		AI.AIProcess(3);
-        		Tile tempTile = new Tile(split[3]);
-                AI.placeTile(Integer.valueOf(split[5]), Integer.valueOf(split[7]), tempTile);
+                AI.placeFirstTile(split[3], Integer.valueOf(split[5]), Integer.valueOf(split[6]), Integer.valueOf(split[7]));
                 tigerMeep = 7;
         	}
         	else if (split[0].equals("THE")) {

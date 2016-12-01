@@ -1,8 +1,7 @@
 package Game;
 
-import tigerzone.bot2;
-import tigerzone.fakeBot;
-import tigerzone.move;
+import Game.AI;
+import Game.move;
 import java.net.*;
 import java.io.*;
 
@@ -154,9 +153,7 @@ public class tigerzoneServerProtocol {
             theOutput = "STARTING TILE IS " + startingTile + " AT " + xPos + " " + yPos + " " + rot;
             //Initialize board and place first for serverBot
             serverBot.initBoards();
-    		serverBot.botProcess(3);
-            serverBot.firstTile(startingTile, 0, 0, 0);
-            //serverBot.placeFirstTile(startingTile, xPos, yPos, rot);
+            serverBot.placeFirstTile(startingTile, xPos, yPos, rot);
             state = SentStartTile;
         }
         

@@ -34,22 +34,25 @@ public class AI {
 			return;
 		}
 		//Place first tile
-		public void firstTile(String tile, int x, int y, int rot){
-			Tile newTile = new Tile(tile);
-			move reportMove = boardA.placeTile(tile, 77 - y, 77 + x, rot);
-			boardB.makeMoveBoard(newTile, 77 - y, 77 + x, rot);
-			/*//Initialize board bounds
-			boardA.setTopBound(77 + x - 1);
-			boardA.setBottomBound(77 + x + 1);
-			boardA.setLeftBound(77 - y - 1);
-			boardA.setRightBound(77 - y + 1);
-			boardB.setTopBound(77 + x - 1);
-			boardB.setBottomBound(77 + x + 1);
-			boardB.setLeftBound(77 - y - 1);
-			boardB.setRightBound(77 - y + 1);*/
-			System.out.println("Report Move: " + reportMove.xPos + " " + reportMove.yPos + " " + reportMove.xPos);
+		public void placeFirstTile(String tile, int x, int y, int rot){
+			Tile tempTile = new Tile(tile);
+			boardA.placeTile(77 - y, 77 + x, rot, tempTile);
+			boardB.placeTile(77 - y, 77 + x, rot, tempTile);
 			return;
 		}
+		
+		//Place a tile ALWAYS ENEMY TILE
+		public void placeTile(String game, String tile, int x, int y, int rot, String meep, int meepPos){
+			Tile tempTile = new Tile(tile);
+			if (game.equals(firstGame)) {
+				boardA.placeTile(77 - y, 77 + x, rot, tempTile);
+			}
+			else {
+				boardB.placeTile(77 - y , 77 + x, rot, tempTile);
+			}
+			return;
+		}
+		
 		//Return a move for the given tile 
 		public move makeMove(String game, int time, String tile){
 			
@@ -66,27 +69,23 @@ public class AI {
 			Tile newTile = new Tile(tile);
 			move tempMove2;
 			if (game.equals(firstGame)){
-				tempMove2 = boardA.makeMoveBoard(newTile);
+				if (newTile != boardA.deck.getTop()){
+					System.out.println("ERROR Tile Delt doesn't equal top tile of deck");
+				}
+				tempMove2 = boardA.addTile(newTile);
 			}
 			else {
-				tempMove2 = boardB.makeMoveBoard(newTile);
+				if (newTile != boardB.deck.getTop()){
+					System.out.println("ERROR Tile Delt doesn't equal top tile of deck");
+				}
+				tempMove2 = boardB.addTile(newTile);
 			}
 			//Translate x and y coordinates and rotation
 			move currMove = new move(tempMove2.yPos - 77, 77 - tempMove2.xPos , tempMove2.rot, tempMove2.meep, tempMove2.meepPos);
 			System.out.println("Got a move in: " + (System.currentTimeMillis() - startTime));
 			return currMove;
 		}
-		//Place a tile ALWAYS ENEMY TILE
-		public void placeTile(String game, String tile, int x, int y, int rot, String meep, int meepPos){
-			Tile tempTile = new Tile(tile);
-			if (game.equals(firstGame)) {
-				boardA.placeTile(77 - y, 77 + x, rot, tempTile);
-			}
-			else {
-				boardB.placeTile(77 - y , 77 + x, rot, tempTile);
-			}
-			return;
-		}
+		
 		//Tile couldn't be placed
 		//Place Tiger at x y
 		public void placeMeep(int x, int y) {

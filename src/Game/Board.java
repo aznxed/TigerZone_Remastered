@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import Game.Tile;
 import Game.TerrainType;
+import Game.move;
 
 public class Board {
 	// Boundaries of the Board
@@ -405,13 +406,13 @@ public class Board {
 		if (y == getRightBound() && y < MAX_COLS - 1) {
 			setRightBound(y + 1);
 		}
-
 		return 1;
 		// return true;
 	}
 
 	//Get a valid move for the tile
-	public void addTile(Tile tile) {
+	public move addTile(Tile tile) {
+		move tempMove;
 		if (!(getPossibleMoves(tile).isEmpty())) {
 			Random rand = new Random();
 			List<Tile> getPosMoves = getPossibleMoves(tile);
@@ -420,11 +421,8 @@ public class Board {
 			int x = addTile.getRow();
 			int y = addTile.getCol();
 			System.out.print("Tile placed at " + x + " " + y);
-			Tile tilee = new Tile(tile.getTileType());
-			this.placeTile(x, y, addTile.getDegrees(), tilee);
-			//placedTiles.add(addTile);
-			//addTile.setBoard(this);
-			//board[x][y] = addTile;
+			Tile tempTile = new Tile(tile.getTileType());
+			this.placeTile(x, y, addTile.getDegrees(), tempTile);
 
 			if (x == getTopBound() && x > 0) {
 				setTopBound(x - 1);
@@ -438,9 +436,13 @@ public class Board {
 			if (y == getRightBound() && y < MAX_COLS - 1) {
 				setRightBound(y + 1);
 			}
-			
-			
+			tempMove = new move(x, y, addTile.getDegrees(), "", -1);
 		}
+		//Possible move list is empty
+		else {
+			tempMove = new move(0, 0, 0, "PASS", -1);
+		}
+		return tempMove;
 	}
 	
 }
