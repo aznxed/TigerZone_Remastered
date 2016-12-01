@@ -1,4 +1,5 @@
 package Game;
+
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -7,7 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 public class UI {
+	public String imagePath = "src/images/";
+	
 	public int getType(String terrainType){
 		switch(terrainType){
 			case"JJJJ-":	
@@ -70,8 +74,7 @@ public class UI {
 		return 0;
 	}
 	
-	public void createUIBoard(Board gameBoard){
-		String imagePath = "src/images/";
+	public void createUIBoard(Board gameBoard) {
 		JFrame frame = new JFrame();
 		frame.setPreferredSize(new Dimension(800, 1000));
 	
