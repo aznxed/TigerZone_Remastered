@@ -249,7 +249,7 @@ public class tigerzoneServerProtocol {
         	}
         	else if (split[0].equals("GAME") && split[2].equals("MOVE")) {
         		if (!((moveTime * 1000) < (System.currentTimeMillis() - moveStartTime))){
-        			//Check player move
+        			//Check player move time
         			
         		}
         		//Out of time Forfeit

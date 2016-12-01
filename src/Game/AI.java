@@ -76,13 +76,13 @@ public class AI {
 			if (game.equals(firstGame)){
 				debugPrint.out("---------------" + boardA.deck.getSize());
 				/*if (newTile.equals(boardA.deck.getTop())){
-					System.out.println("ERROR Tile Delt doesn't equal top tile of deck");
+					System.out.println("ERROR Tile Dealt doesn't equal top tile of deck");
 				}*/
 				tempMove2 = boardA.addTile(newTile);
 			}
 			else {
 				/*if (newTile.equals(boardB.deck.getTop())){
-					System.out.println("ERROR Tile Delt doesn't equal top tile of deck");
+					System.out.println("ERROR Tile Dealt doesn't equal top tile of deck");
 				}*/
 				tempMove2 = boardB.addTile(newTile);
 			}
