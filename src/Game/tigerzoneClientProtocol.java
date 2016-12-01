@@ -4,6 +4,7 @@ import Game.AI;
 import Game.move;
 import java.net.*;
 import java.io.*;
+import Game.Tile;
 
 public class tigerzoneClientProtocol {
     private static final int WAITING = 0;
@@ -52,7 +53,7 @@ public class tigerzoneClientProtocol {
 	
 	private int tigerMeep = 7;
     
-    AI bot = new AI();
+    AI AI = new AI();
     
     public void initInfo(String servPass, String playName, String playPass) {
     	serverPassword = servPass;
@@ -67,7 +68,7 @@ public class tigerzoneClientProtocol {
         	System.out.println("Game Record:      " + boardWinTotal + " - " + boardTieTotal + " - " + boardLossTotal);
         	System.out.println("Forfeited:        " + myForfeit);
         	System.out.println("Enemy Forfeited:  " + enemyForfeit);
-        	bot.printBoard();
+        	AI.printBoard();
     	}
     	else {
     		System.out.println("No games played");
@@ -131,23 +132,27 @@ public class tigerzoneClientProtocol {
         		opponent = split[4];
         	}
         	else if (split[0].equals("STARTING")) {
-        		//bot.placeFirstTile(split[3], Integer.valueOf(split[5]), Integer.valueOf(split[6]), Integer.valueOf(split[7]));
-        		bot.initBoards();
-        		bot.botProcess(3);
-                bot.firstTile(split[3], Integer.valueOf(split[6]), Integer.valueOf(split[5]), Integer.valueOf(split[7]));
+        		//split[3] = tile name
+        		//split[5] = x position
+        		//split[6] = y position
+        		//split[7] = rotation
+        		AI.initBoards();
+        		AI.AIProcess(3);
+        		Tile tempTile = new Tile(split[3]);
+                AI.placeTile(Integer.valueOf(split[6]), Integer.valueOf(split[5]), Integer.valueOf(split[7]), tempTile);
                 tigerMeep = 7;
         	}
         	else if (split[0].equals("THE")) {
         		for (int i = 0; i < Integer.valueOf(split[2]); i++) {
         			//Add tile to deck
-        			//bot.addDeck(split[6 + i]);
+        			//AI.addDeck(split[6 + i]);
         		}
         	}
         	else if (split[0].equals("MATCH")) {
         	}
         	else if (split[0].equals("MAKE")) {
         		//player needs to make a move
-            	playerMove = bot.makeMove(split[5], Integer.valueOf(split[7]), split[12]);
+            	playerMove = AI.makeMove(split[5], Integer.valueOf(split[7]), split[12]);
         		theOutput = "GAME " + split[5] + " MOVE " + split[10];
         		if ((playerMove.meepPos) != -1){
             		theOutput = theOutput + " PLACE " + split[12]+ " AT "
@@ -247,10 +252,10 @@ public class tigerzoneClientProtocol {
         			//GAME <gid> MOVE <#> PLAYER <pid> TILE <tile> UNPLACEABLE RETRIEVE TIGER AT <x> <y>
         			if (split[6].equals("PLACED")){
 	        			if (true) {
-	        				bot.placeTile(split[1], split[7], Integer.valueOf(split[9]), Integer.valueOf(split[10]), Integer.valueOf(split[11]), "", -1);
+	        				AI.placeTile(split[1], split[7], Integer.valueOf(split[9]), Integer.valueOf(split[10]), Integer.valueOf(split[11]), "", -1);
 	        				}
 	        			else {
-	        				bot.placeTile(split[1], split[7], Integer.valueOf(split[9]), Integer.valueOf(split[10]), Integer.valueOf(split[11]), split[12], Integer.valueOf(split[13]));
+	        				AI.placeTile(split[1], split[7], Integer.valueOf(split[9]), Integer.valueOf(split[10]), Integer.valueOf(split[11]), split[12], Integer.valueOf(split[13]));
 	        			}
         			}
         			//Tile is Unplaceable
@@ -262,11 +267,11 @@ public class tigerzoneClientProtocol {
         				}
         				//Retrieve Tiger
         				else if (split[9].equals("RETRIEVED")){
-        					//bot.removeMeep(Integer.valueOf(split[12]), Integer.valueOf(split[13]));
+        					//AI.removeMeep(Integer.valueOf(split[12]), Integer.valueOf(split[13]));
         				}
         				//Add Tiger
         				else if (split[9].equals("ADDED")){
-        					//bot.placeMeep(Integer.valueOf(split[13]), Integer.valueOf(split[14]));
+        					//AI.placeMeep(Integer.valueOf(split[13]), Integer.valueOf(split[14]));
         				}
         			}
         			else {
