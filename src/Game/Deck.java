@@ -18,4 +18,8 @@ public class Deck {
 		return tileDeck.size();
 	}
 	
+	public boolean isEmpty() {
+		return tileDeck.isEmpty();
+	}
+	
 }

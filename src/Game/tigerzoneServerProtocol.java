@@ -59,7 +59,7 @@ public class tigerzoneServerProtocol {
 	//Used for sending current game
 	private boolean gameID = true;
 	
-	bot2 serverBot = new bot2();
+	AI serverBot = new AI();
 	
 	public String moveMess(String gID, int time, int num, String tiles){
 		String mess = "";

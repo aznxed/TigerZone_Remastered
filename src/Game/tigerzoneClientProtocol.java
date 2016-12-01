@@ -68,7 +68,7 @@ public class tigerzoneClientProtocol {
         	System.out.println("Game Record:      " + boardWinTotal + " - " + boardTieTotal + " - " + boardLossTotal);
         	System.out.println("Forfeited:        " + myForfeit);
         	System.out.println("Enemy Forfeited:  " + enemyForfeit);
-        	AI.printBoard();
+        	AI.printBoard(1);
     	}
     	else {
     		System.out.println("No games played");
@@ -131,6 +131,7 @@ public class tigerzoneClientProtocol {
         	else if (split[0].equals("YOUR")) {
         		opponent = split[4];
         	}
+        	//Place the first Tile
         	else if (split[0].equals("STARTING")) {
         		//split[3] = tile name
         		//split[5] = x position
@@ -139,7 +140,7 @@ public class tigerzoneClientProtocol {
         		AI.initBoards();
         		AI.AIProcess(3);
         		Tile tempTile = new Tile(split[3]);
-                AI.placeTile(Integer.valueOf(split[6]), Integer.valueOf(split[5]), Integer.valueOf(split[7]), tempTile);
+                AI.placeTile(Integer.valueOf(split[5]), Integer.valueOf(split[7]), tempTile);
                 tigerMeep = 7;
         	}
         	else if (split[0].equals("THE")) {

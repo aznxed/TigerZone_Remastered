@@ -10,9 +10,8 @@ public class boardTest {
 	public static void main(String[] args) throws IOException {
 		Board gameBoard = new Board();
 		Deck deck = new Deck();
-		//Tile tile1 = new Tile("JJJJ-");
-		//Tile tile2 = new Tile("TJTJ-");
 		
+		//Add a bunch of tiles to the deck
 		deck.addTile("TLTJ-");
 		deck.addTile("TJJT-");
 		deck.addTile("LLJJ-");
@@ -26,23 +25,10 @@ public class boardTest {
 		deck.addTile("TJTT-");
 		deck.addTile("TLTTP");
 		
-		
-		//Tile tile1 = new Tile("TLLT-");
-		//gameBoard.placeTile(CENTER_CELL, CENTER_CELL, 0, tile1);
-		
-		
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		gameBoard.addTile(deck.getTop());
-		//gameBoard.addTile(deck.getTop());
-		//gameBoard.addTile(deck.getTop());
-		//gameBoard.addTile(deck.getTop());
+		//Get every tile from the deck and print it out
+		while (!deck.isEmpty()) {
+			gameBoard.addTile(deck.getTop());
+		}
 		
 		
 		
@@ -67,7 +53,7 @@ public class boardTest {
 		//gameBoard.placeTile(CENTER_CELL+1, CENTER_CELL, 90, tile2);
 		//System.out.println(tile2.getCol());
 		
-		UI test = new UI();
-		test.createUIBoard(gameBoard);
+		//Print out the board
+		gameBoard.printBoard();
 	}
 }
