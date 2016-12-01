@@ -1,13 +1,11 @@
 package testing;
 
-import java.io.IOException;
 import Game.Board;
 import Game.Deck;
-import Game.UI;
-
 
 public class boardTest {
-	public static void main(String[] args) throws IOException {
+	public static void main(){
+		//Initialize board and deck
 		Board gameBoard = new Board();
 		Deck deck = new Deck();
 		
@@ -54,6 +52,6 @@ public class boardTest {
 		//System.out.println(tile2.getCol());
 		
 		//Print out the board
-		gameBoard.printBoard();
+		gameBoard.print();
 	}
 }

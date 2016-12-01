@@ -4,7 +4,7 @@ import Game.AI;
 import Game.move;
 import java.net.*;
 import java.io.*;
-import Game.Tile;
+import testing.debugPrint;
 
 public class tigerzoneClientProtocol {
     private static final int WAITING = 0;
@@ -54,6 +54,7 @@ public class tigerzoneClientProtocol {
 	private int tigerMeep = 7;
     
     AI AI = new AI();
+    debugPrint debugPrint = new debugPrint();
     
     public void initInfo(String servPass, String playName, String playPass) {
     	serverPassword = servPass;

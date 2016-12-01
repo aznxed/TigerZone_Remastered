@@ -6,6 +6,8 @@ import java.util.Random;
 import Game.Tile;
 import Game.TerrainType;
 import Game.move;
+import testing.debugPrint;
+import Game.UI;
 
 public class Board {
 	// Boundaries of the Board
@@ -18,6 +20,7 @@ public class Board {
 	private int leftBound = 77;
 	private int rightBound = 77;
 
+	public debugPrint debugPrint = new debugPrint();
 	public Deck deck = new Deck();
 	private Tile[][] board = new Tile[MAX_ROWS][MAX_COLS];
 	private List<Tile> placedTiles = new ArrayList<Tile>();
@@ -63,9 +66,10 @@ public class Board {
 	/******* Testing Functions *******/
 	/*********************************/
 
-	public int printBoard() {
-		
-		return 1;
+	public void print() {
+		UI test = new UI();
+		test.createUIBoard(this);
+		return;
 	}
 
 	public List<Tile> getNeighbors(int x, int y) {
@@ -297,12 +301,10 @@ public class Board {
 					
 					for (int k = 0; k < validOrients.size(); k++) {
 						Tile newTile = new Tile(tile.getTileType());
-						//System.out.println(i);
-						//System.out.println(j);
 						newTile.setRow(i);
 						newTile.setCol(j);
-						System.out.print(i + " ");
-						System.out.println(j);
+						debugPrint.out(i + " ");
+						debugPrint.out(j);
 						possibleMoves.add(rotateTile(newTile, validOrients.get(k)));
 						
 					}
@@ -420,7 +422,7 @@ public class Board {
 			
 			int x = addTile.getRow();
 			int y = addTile.getCol();
-			System.out.print("Tile placed at " + x + " " + y);
+			debugPrint.out("Tile placed at " + x + " " + y);
 			Tile tempTile = new Tile(tile.getTileType());
 			this.placeTile(x, y, addTile.getDegrees(), tempTile);
 

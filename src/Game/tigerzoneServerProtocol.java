@@ -4,6 +4,7 @@ import Game.AI;
 import Game.move;
 import java.net.*;
 import java.io.*;
+import testing.debugPrint;
 
 public class tigerzoneServerProtocol {
     private static final int WAITING = 0;
@@ -33,6 +34,8 @@ public class tigerzoneServerProtocol {
     private int roundNum = 1;
     private int roundTotal = 1;
     private int moveTime = 1;
+    
+    public debugPrint debugPrint = new debugPrint();
 
 	private int timeToMatch = 3;
     private String tourPassword = "PersiaRocks!";
