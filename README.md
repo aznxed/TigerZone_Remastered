@@ -63,10 +63,10 @@ In Eclipse:
  * To run just one test, simply highlight its method name and hit the green run button. Keep in mind this is only okay for the first few tests. The later tests rely on the previous tests to pass. 
  
 In command line/terminal:
- * Go to the downlaoded project directory
+ * Go to the downloaded project directory
  * To compile enter: javac Board.java Junit.java JunitRunner.java 
  * To run enter: java JunitRunner 
- * If all the tests pass you will get true 
+ * If all the tests pass you will get 'true' 
 
 
 ##Difficulties and Challenges
