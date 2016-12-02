@@ -544,6 +544,10 @@ public class Board {
 											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0),
 											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0)};
 				tempPiece.anim = DEER;
+			case "TLLLC":
+				tempPiece.sects = new sect[]{new sect(J, 2, 0), new sect(T, 3, 0), new sect(J, 2, 0), 
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0),
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0)};
 				break;
 			default: 
 				System.out.println("ERROR COULD NOT FIND TILE: " + tileName);

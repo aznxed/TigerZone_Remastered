@@ -26,11 +26,12 @@ public class boardTest {
 		deck.addTile("TLTTP");
 		
 		gameBoard.initBoards(deck.getSize());
-		gameBoard.placeTile(deck.getTop(), 11, 12, 0);
 		
 		int size = deck.getSize();
 		
 		gameBoard.placeTile(deck.getTop(), size, size, 0);
+		
+		gameBoard.placeTile(deck.getTop(), size - 1, size, 0);
 		
 		//Get every tile from the deck and print it out
 		while (!deck.isEmpty()) {
