@@ -57,10 +57,10 @@ For unit testing, we decided to use JUnit. JUnit is a unit testing framework for
 These unit tests are testing the core game logic that our AI depends on to make valid moves.  
 
 ##How to Run Tests
-In Eclipse: Running Junit tests are simple in Eclipse, therefore it is the prefered. 
+In Eclipse: 
  * Simply click on the Junit.java file
  * Click on the green run button in the top left corner. The tests will all run in the order they are shown. 
- *To run just one test, simply highlight its method name and hit the green run button. Keep in mind this is only okay for the first few tests. The later tests rely on the previous tests to pass. 
+ * To run just one test, simply highlight its method name and hit the green run button. Keep in mind this is only okay for the first few tests. The later tests rely on the previous tests to pass. 
  
  In command line/terminal:
  * Go to the downlaoded project directory
