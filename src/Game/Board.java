@@ -292,7 +292,6 @@ public class Board {
 	}
 
 	public List<Tile> getPossibleMoves(Tile tile) {
-		int count = 0;
 		List<Tile> possibleMoves = new ArrayList<Tile>();
 		for (int i = getTopBound(); i <= getBottomBound(); i++) {
 			for (int j = getLeftBound(); j <= getRightBound(); j++) {
@@ -325,7 +324,7 @@ public class Board {
 
 	public Tile getTile(int x, int y) {
 		if (x >= 0 && x < MAX_ROWS && y >= 0 && y < MAX_COLS) {
-			return board[x][y];
+			return this.board[x][y];
 		}
 		return null;
 	}
@@ -391,7 +390,7 @@ public class Board {
 		// add tile to board
 		// give tile coords
 		placedTiles.add(tile);
-		board[x][y] = tile;
+		this.board[x][y] = tile;
 		tile.setCol(y);
 		tile.setRow(x);
 		tile.setBoard(this);

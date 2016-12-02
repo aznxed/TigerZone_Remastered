@@ -42,6 +42,7 @@ public class Junit {
 	        TerrainType.GAMETRAIL, TerrainType.GAMETRAIL, TerrainType.GAMETRAIL, 
 	        TerrainType.JUNGLE, TerrainType.GAMETRAIL, TerrainType.JUNGLE };
 
+	//Create board
 	static Board testBoard = new Board();
 	
 	//testTile1 and it's rotations
