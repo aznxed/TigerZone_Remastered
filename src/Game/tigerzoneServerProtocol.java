@@ -238,13 +238,7 @@ public class tigerzoneServerProtocol {
         	if (split[0].equals("GAME") && split[2].equals("MOVE")) {
     			//Check player move time
         		if (!((moveTime * 1000) < (System.currentTimeMillis() - moveStartTime))){
-        			if (!split[7].equals("PASS")) {
-	    				boolean validMove = serverBot.isValid(Integer.valueOf(split[7]), Integer.valueOf(split[8]), split[5], gameID);
-	    				if (!validMove) {
-	    					theOutput = "GAME " + (gameID ? "B" : "A") + " MOVE " + moveNum + " PLAYER " + playerName + 
-	    							" FORFEITED: ILLEGAL TILE PLACEMENT";
-	    				}
-    				}
+        			//Check Valid tile move
         		}
         		//Out of time Forfeit
         		else {
