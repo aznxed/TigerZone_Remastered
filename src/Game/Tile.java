@@ -129,10 +129,9 @@ public class Tile {
 						TerrainType.JUNGLE }; 
 				return tileE;
 			case"TJJT-":	
-				TerrainType[] tileF = { TerrainType.JUNGLE, TerrainType.GAMETRAIL,
-						TerrainType.JUNGLE, TerrainType.GAMETRAIL,
-						TerrainType.GAMETRAIL, TerrainType.JUNGLE, TerrainType.JUNGLE,
-						TerrainType.JUNGLE, TerrainType.JUNGLE }; 
+				TerrainType[] tileF = { TerrainType.JUNGLE, TerrainType.GAMETRAIL,TerrainType.JUNGLE, 
+						TerrainType.GAMETRAIL,TerrainType.GAMETRAIL, TerrainType.JUNGLE, 
+						TerrainType.JUNGLE,TerrainType.JUNGLE, TerrainType.JUNGLE }; 
 				return tileF;
 			case"TJTT-":	
 				TerrainType[] tileG = { TerrainType.JUNGLE, TerrainType.GAMETRAIL,
