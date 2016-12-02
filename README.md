@@ -62,7 +62,7 @@ In Eclipse:
  * Click on the green run button in the top left corner. The tests will all run in the order they are shown. 
  * To run just one test, simply highlight its method name and hit the green run button. Keep in mind this is only okay for the first few tests. The later tests rely on the previous tests to pass. 
  
- In command line/terminal:
+In command line/terminal:
  * Go to the downlaoded project directory
  * To compile enter: javac Board.java Junit.java JunitRunner.java 
  * To run enter: java JunitRunner 
