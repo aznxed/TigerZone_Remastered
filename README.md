@@ -30,14 +30,16 @@ The UI was developed in it's own class and is independent of the game. According
 
 The TCP client/server
 
-The tcp code was designed to be modular enough to allow for seperate client and server executables as well as a protocolTest which can be used to simulate a tigerzone game on a single machine. tcpClient is the main file used to connect to the tournament server. It accepts the following arguments: <host> <port> <serverPassword> <PlayerID> <PlayerPassword>. tcpServer can be used as a fake server with args <port>. protocolTest can be used without arguments to simulate messages sent and received from the server.
+The tcp code was designed to be modular enough to allow for seperate client and server executables as well as a protocolTest which can be used to simulate a tigerzone game on a single machine. tcpServer can be used as a fake server with args "port". protocolTest can be used without arguments to simulate messages sent and received from the server.
 
 
 ##How to Build the client
-//Spencer, do you mind?
+Eclipse File -> Import. Projects from Git and then paste the github url. Then File -> Export, Select JAR file and check the box for TigerZone_Remastered. Click next twice. For Main Class click Browse in the bottom right. Select tcpClient and click okay. Click Finish.
+tcpClient.jar can be run from command line using java - jar "path to tcpClient.jar"
 
 ##How to Run the Client
-//Spencer, do you mind?
+
+tcpClient is the main file used to connect to the tournament server. It accepts the following arguments: "host" "port" "serverPassword" "PlayerID" "PlayerPassword". 
 
 ##Unit and Acceptance Tests
 __"You could test all your business rules, all your presenters...without the application server, the web running, anything running, at 30,000 feet, while sipping a gin and tonic" - Robert C. Martin__
