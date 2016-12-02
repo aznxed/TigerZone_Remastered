@@ -133,7 +133,7 @@ public class AI {
 		
 		public boolean isValid(int x, int y, String tile, boolean gameA) {
 			Tile tempTile = new Tile(tile);
-			if (gameA) { return boardA.isValid(x, y, tempTile); }
-			else { return boardB.isValid(x, y, tempTile); }
+			if (gameA) { return boardA.isValid(77 - y, x + 77, tempTile); }
+			else { return boardB.isValid(77 - y, x + 77, tempTile); }
 		}
 }
