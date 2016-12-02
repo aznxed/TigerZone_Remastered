@@ -2,453 +2,545 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import Game.Tile;
-import Game.TerrainType;
+
+import Game.sect;
 import Game.move;
-import testing.debugPrint;
-import Game.UI;
+import Game.position;
 
 public class Board {
-	// Boundaries of the Board
-	public static int CENTER_CELL = 77;
-	public static int MAX_ROWS = CENTER_CELL * 2 - 1;
-	public static int MAX_COLS = CENTER_CELL * 2 - 1;
+	public int size;
+	public int center;
 	
-	private int topBound = 77;
-	private int bottomBound = 77;
-	private int leftBound = 77;
-	private int rightBound = 77;
+	private static final int DEER = 1;
+	private static final int BUFFALO = 2;
+	private static final int BOAR = 3;
 
-	public debugPrint debugPrint = new debugPrint();
-	public Deck deck = new Deck();
-	private Tile[][] board = new Tile[MAX_ROWS][MAX_COLS];
-	private List<Tile> placedTiles = new ArrayList<Tile>();
-
-	/*******************************************/
-	/******* Getter and Setter Functions *******/
-	/*******************************************/
-
-	public int getTopBound() {
-		return this.topBound;
+	private static final int J = 1;
+	private static final int L = 2;
+	private static final int T = 3;
+	private static final int D = 4;
+	
+	private List<position> posList = new ArrayList<position>();
+	
+	private block[][] board = new block[154][154];
+	
+	public int topBound = 0;
+	public int bottomBound = 0;
+	public int leftBound = 0;
+	public int rightBound = 0;
+	
+	//Chain
+	private lake[] boardLake;
+	private den[] boardDen;
+	private jungle[] boardJungle;
+	private trail[] boardTrail;
+	private int[] cluster;
+	
+	private int featureNum = 0;
+	
+	public class meepStruct {
+		public int meepNum = 0;
+		public int meepType = 0;
 	}
-
-	public int getBottomBound() {
-		return this.bottomBound;
+	
+	public class block {
+		public String tileName = "NULL";
+		public int rot = 0;
+		public int tileNum = 0;
+		public meepStruct[] meeps = new meepStruct[9];
+		public piece piece = new piece();
 	}
-
-	public int getLeftBound() {
-		return this.leftBound;
+	
+	//tiles on the board
+	//int type
+	//int number (used to distinguish connected parts)
+	public class piece {
+		public sect[] sects = new sect[9];
+		public int anim = 0;
 	}
-
-	public int getRightBound() {
-		return this.rightBound;
+	
+	public class prey {
+		public int num = 0;
+		public boolean deer = false;
+		public boolean buffalo = false;
+		public boolean boar = false;
 	}
-
-	public void setTopBound(int upperBound) {
-		this.topBound = upperBound;
-	}
-
-	public void setBottomBound(int lowerBound) {
-		this.bottomBound = lowerBound;
-	}
-
-	public void setLeftBound(int leftBound) {
-		this.leftBound = leftBound;
-	}
-
-	public void setRightBound(int rightBound) {
-		this.rightBound = rightBound;
-	}
-
-
-	/*********************************/
-	/******* Testing Functions *******/
-	/*********************************/
-
-	public void print() {
-		UI test = new UI();
-		test.createUIBoard(this);
-		return;
-	}
-
-	public List<Tile> getNeighbors(int x, int y) {
-		List<Tile> n = new ArrayList<Tile>();
-
-		if (y > 0) {
-			if (board[x][y - 1] != null) {
-				n.add(board[x][y - 1]);
+	
+	public void addprey(prey tilePrey, int preyToAdd) {
+		switch(preyToAdd) {
+		case DEER:
+			if (!tilePrey.deer) {
+				//No Deer in tile chain
+				tilePrey.deer = true;
+				tilePrey.num++;
 			}
-		}
-
-		if (y < MAX_COLS) {
-			if (board[x][y + 1] != null) {
-				n.add(board[x][y + 1]);
+			break;
+		case BUFFALO:
+			if (!tilePrey.buffalo) {
+				tilePrey.buffalo = true;
+				tilePrey.num++;
 			}
-		}
-
-		if (x > 0) {
-			if (board[x - 1][y] != null) {
-				n.add(board[x - 1][y]);
+			break;
+		case BOAR:
+			if (!tilePrey.boar) {
+				tilePrey.boar = true;
+				tilePrey.num++;
 			}
-		}
-
-		if (x < MAX_ROWS) {
-			if (board[x + 1][y] != null) {
-				n.add(board[x + 1][y]);
-			}
-		}
-
-		return n;
-	}
-
-	public boolean isValid(int x, int y, Tile tile) {
-
-		if (board[x][y] != null) {
-			return false;
-		}
-		
-		if (placedTiles.isEmpty()) {
-			return true;
-		}
-
-		else {
-			List<Tile> nbors = getNeighbors(x, y);
-			if (nbors.isEmpty()) {
-				return false;
-			}
-			
-			else{
-				return true;
-			}
-			
+			break;
 		}
 	}
-
-	public Tile rotateTile(Tile tile, int degrees) {
-		Tile rotateTile = new Tile(tile.getTileType());
-
-		if (degrees != 0) {
-			TerrainType[] rotateArr = new TerrainType[9];
-			if (degrees == 90) {
-				rotateArr[0] = tile.getTilePortionType()[2];
-				rotateArr[1] = tile.getTilePortionType()[5];
-				rotateArr[2] = tile.getTilePortionType()[8];
-				rotateArr[3] = tile.getTilePortionType()[1];
-				rotateArr[4] = tile.getTilePortionType()[4];
-				rotateArr[5] = tile.getTilePortionType()[7];
-				rotateArr[6] = tile.getTilePortionType()[0];
-				rotateArr[7] = tile.getTilePortionType()[3];
-				rotateArr[8] = tile.getTilePortionType()[6];
-			}
-			if (degrees == 180) {
-				for (int i = 0; i < 9; i++) {
-					rotateArr[i] = tile.getTilePortionType()[8 - i];
-				}
-			}
-			if (degrees == 270) {
-				rotateArr[0] = tile.getTilePortionType()[6];
-				rotateArr[1] = tile.getTilePortionType()[3];
-				rotateArr[2] = tile.getTilePortionType()[0];
-				rotateArr[3] = tile.getTilePortionType()[7];
-				rotateArr[4] = tile.getTilePortionType()[4];
-				rotateArr[5] = tile.getTilePortionType()[1];
-				rotateArr[6] = tile.getTilePortionType()[8];
-				rotateArr[7] = tile.getTilePortionType()[5];
-				rotateArr[8] = tile.getTilePortionType()[2];
-			}
-			rotateTile.setTilePortionType(rotateArr);
-			rotateTile.setDegrees(degrees);
-			rotateTile.setCol(tile.getCol());
-			rotateTile.setRow(tile.getRow());
-			
-			return rotateTile;
-		}
-		rotateTile.setTilePortionType(tile.getTilePortionType());
-		rotateTile.setDegrees(0);
-		rotateTile.setCol(tile.getCol());
-		rotateTile.setRow(tile.getRow());
-		return rotateTile;
+	
+	public class den {
+		public boolean comp = false;
+		public int tileNum = 0;
+		public int tigerNum = 0;
 	}
-
-	public List<Integer> getValidOrients(int x, int y, Tile tile) {
-		List<Integer> validOrients = new ArrayList<Integer>();
-
-		List<Tile> nbors = getNeighbors(x, y);
-
-		// Add possible orientation to list
-		validOrients.add(0);
-		validOrients.add(90);
-		validOrients.add(180);
-		validOrients.add(270);
-
-		// For each neighboring tile, check if sides match for each orientation
-		// If not, remove from validOrients
-		for (int i = 0; i < nbors.size(); i++) {
-			Tile nTile = nbors.get(i);
-
-			if (validOrients.isEmpty()) {
+	
+	public class jungle {
+		public int tigerNum = 0;
+		public List<Integer> lakes = new ArrayList<Integer>();
+		public List<Integer> dens = new ArrayList<Integer>();
+	}
+	
+	public class lake {
+		public boolean comp = false;
+		public int tileNum = 0;
+		public prey preyNum;
+		public int tigerNum = 0;
+		public int crocNum = 0;
+	}
+	
+	public class trail {
+		public int tileNum = 0;
+		public int tigerNum = 0;
+		public int crocNum = 0;
+		public prey preyNum;
+	}
+	
+	public block[][] getBoard(){
+		return board;
+	}
+	
+	//Rotate piece
+	public piece rotate(piece piece, int rot) {
+		piece tempPiece = new piece();
+		tempPiece.sects[4] = piece.sects[4];
+		switch(rot){
+			case 0:
+				return piece;
+			case 90: 
+				tempPiece.sects[0] = piece.sects[6];
+				tempPiece.sects[1] = piece.sects[3];
+				tempPiece.sects[2] = piece.sects[0];
+				tempPiece.sects[3] = piece.sects[7];
+				tempPiece.sects[5] = piece.sects[1];
+				tempPiece.sects[6] = piece.sects[8];
+				tempPiece.sects[7] = piece.sects[5];
+				tempPiece.sects[8] = piece.sects[2];
 				break;
-			}
-			// Check if its in same row
-			if (nTile.getRow() == x) {
-				if (nTile.getCol() > y) {
-					// This is right neighbor
-					if (nTile.getLeftEdge() != tile.getRightEdge()) {
-						if (validOrients.contains(0)) {
-							validOrients.remove(Integer.valueOf(0));
-						}
-					}
-					if (nTile.getLeftEdge() != tile.getBottomEdge()) {
-						if (validOrients.contains(90)) {
-							validOrients.remove(Integer.valueOf(90));
-						}
-					}
-					if (nTile.getLeftEdge() != tile.getLeftEdge()) {
-						if (validOrients.contains(180)) {
-							validOrients.remove(Integer.valueOf(180));
-						}
-					}
-					if (nTile.getLeftEdge() != tile.getTopEdge()) {
-						if (validOrients.contains(270)) {
-							validOrients.remove(Integer.valueOf(270));
-						}
-					}
-				} else {
-					// This is left neighbor
-					if (nTile.getRightEdge() != tile.getLeftEdge()) {
-						if (validOrients.contains(0)) {
-							validOrients.remove(Integer.valueOf(0));
-						}
-					}
-					if (nTile.getRightEdge() != tile.getTopEdge()) {
-						if (validOrients.contains(90)) {
-							validOrients.remove(Integer.valueOf(90));
-						}
-					}
-					if (nTile.getRightEdge() != tile.getRightEdge()) {
-						if (validOrients.contains(180)) {
-							validOrients.remove(Integer.valueOf(180));
-						}
-					}
-					if (nTile.getRightEdge() != tile.getBottomEdge()) {
-						if (validOrients.contains(270)) {
-							validOrients.remove(Integer.valueOf(270));
-						}
-					}
-				}
-			}
-
-			if (nTile.getCol() == y) {
-				if (nTile.getRow() > x) {
-					// This is bottom neighbor
-					if (nTile.getTopEdge() != tile.getBottomEdge()) {
-						if (validOrients.contains(0)) {
-							validOrients.remove(Integer.valueOf(0));
-						}
-					}
-					if (nTile.getTopEdge() != tile.getLeftEdge()) {
-						if (validOrients.contains(90)) {
-							validOrients.remove(Integer.valueOf(90));
-						}
-					}
-					if (nTile.getTopEdge() != tile.getTopEdge()) {
-						if (validOrients.contains(180)) {
-							validOrients.remove(Integer.valueOf(180));
-						}
-					}
-					if (nTile.getTopEdge() != tile.getRightEdge()) {
-						if (validOrients.contains(270)) {
-							validOrients.remove(Integer.valueOf(270));
-						}
-					}
-				} else {
-					// This is top neighbor
-					if (nTile.getBottomEdge() != tile.getTopEdge()) {
-						if (validOrients.contains(0)) {
-							validOrients.remove(Integer.valueOf(0));
-						}
-					}
-					if (nTile.getBottomEdge() != tile.getRightEdge()) {
-						if (validOrients.contains(90)) {
-							validOrients.remove(Integer.valueOf(90));
-						}
-					}
-					if (nTile.getBottomEdge() != tile.getBottomEdge()) {
-						if (validOrients.contains(180)) {
-							validOrients.remove(Integer.valueOf(180));
-						}
-					}
-					if (nTile.getBottomEdge() != tile.getLeftEdge()) {
-						if (validOrients.contains(270)) {
-							validOrients.remove(Integer.valueOf(270));
-						}
-					}
-				}
-			}
+			case 180: 
+				tempPiece.sects[0] = piece.sects[8];
+				tempPiece.sects[1] = piece.sects[7];
+				tempPiece.sects[2] = piece.sects[6];
+				tempPiece.sects[3] = piece.sects[5];
+				tempPiece.sects[5] = piece.sects[3];
+				tempPiece.sects[6] = piece.sects[2];
+				tempPiece.sects[7] = piece.sects[1];
+				tempPiece.sects[8] = piece.sects[0];
+				break;
+			case 270: 
+				tempPiece.sects[0] = piece.sects[2];
+				tempPiece.sects[1] = piece.sects[5];
+				tempPiece.sects[2] = piece.sects[8];
+				tempPiece.sects[3] = piece.sects[1];
+				tempPiece.sects[5] = piece.sects[7];
+				tempPiece.sects[6] = piece.sects[0];
+				tempPiece.sects[7] = piece.sects[3];
+				tempPiece.sects[8] = piece.sects[6];
+				break;
+			default:
+				System.out.println("ERROR INVALID ROTATION: " + rot);
 		}
-
-		return validOrients;
-	}
-
-	public List<Tile> getPossibleMoves(Tile tile) {
-		int count = 0;
-		List<Tile> possibleMoves = new ArrayList<Tile>();
-		for (int i = getTopBound(); i <= getBottomBound(); i++) {
-			for (int j = getLeftBound(); j <= getRightBound(); j++) {
-				if (isValid(i, j, tile)) {
-					List<Integer> validOrients = getValidOrients(i, j, tile);
-					
-					for (int k = 0; k < validOrients.size(); k++) {
-						Tile newTile = new Tile(tile.getTileType());
-						newTile.setRow(i);
-						newTile.setCol(j);
-						debugPrint.out(i + " ");
-						debugPrint.out(j);
-						possibleMoves.add(rotateTile(newTile, validOrients.get(k)));
-						
-					}
-				}
-			}
-		}
-
-		return possibleMoves;
+		return tempPiece;
 	}
 	
-	public Tile[][] getBoard() {
-		return this.board;
-	}
-
-	public List<Tile> getPlacedTile() {
-		return this.placedTiles;
-	}
-
-	public Tile getTile(int x, int y) {
-		if (x >= 0 && x < MAX_ROWS && y >= 0 && y < MAX_COLS) {
-			return board[x][y];
-		}
-		return null;
-	}
-
-	public void removeTile(int x, int y, Tile tile) {
-		board[x][y] = null;
-		placedTiles.remove(tile);
-	}
-	
-	
-	/********************************/
-	/******* Player Functions *******/
-	/********************************/
-
-	//Places a tile on the board
-	//Used for start tile and enemy tile
-	public int placeTile(int x, int y, int rotation, Tile tile) {
-		List<Integer> validOrients = getValidOrients(x, y, tile);
-		if(!validOrients.contains(rotation)){
-			System.out.println("INVALID Orientation, Tile not placed");
-			// 0 = false
-			return 0;
+	public void initBoards(int tiles) {
+		size = (tiles * 2) - 1;
+		center = tiles;
+		
+		//2d Array of Tiles (Path to tile.png, int rotation, int[9] meep)
+		//Used to Display to map
+		block tempBlock = new block();
+		tempBlock.tileName = "NULL";
+		board = new block[size][size];
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				board[i][j] = null;
+			}
 		}
 		
-		if(rotation != 0) {
-			TerrainType[] rotateArr = new TerrainType[9];
-			if (rotation == 90) {
-				rotateArr[0] = tile.getTilePortionType()[2];
-				rotateArr[1] = tile.getTilePortionType()[5];
-				rotateArr[2] = tile.getTilePortionType()[8];
-				rotateArr[3] = tile.getTilePortionType()[1];
-				rotateArr[4] = tile.getTilePortionType()[4];
-				rotateArr[5] = tile.getTilePortionType()[7];
-				rotateArr[6] = tile.getTilePortionType()[0];
-				rotateArr[7] = tile.getTilePortionType()[3];
-				rotateArr[8] = tile.getTilePortionType()[6];
+		//Initialize a cluster of each type (# of tiles * 4)
+		boardLake = new lake[tiles * 4];
+		boardTrail = new trail[tiles * 4];
+		boardJungle = new jungle[tiles * 4];
+		boardDen = new den[tiles * 4];
+		
+		//Initialize array where each tile feature points to 
+		cluster = new int[tiles * 9];
+	}
+	
+	//Adds new possible tile positions to tileList
+	public void addPossiblePos(int x, int y){
+		if (board[x + 1][y] == null) {
+			System.out.println("ADD NEW POS1");
+			posList.add(new position((x + 1), y));
+		}
+		if (board[x - 1][y] == null) {
+			posList.add(new position((x - 1), y));
+			System.out.println("ADD NEW POS2");
+		}
+		if (board[x][y + 1] == null) {
+			posList.add(new position(x, (y + 1)));
+			System.out.println("ADD NEW POS3");
+		}
+		if (board[x][y - 1] == null) {
+			posList.add(new position(x, (y - 1)));
+			System.out.println("ADD NEW POS4");
+		}
+		posList.remove(new position(x, y));
+	}
+	
+	//Generate Clusters and chains
+	public void processTile (piece tile, int x, int y) {
+		for (int i = 0; i < 9; i++) {
+			//Generate a new cluster in array for 
+			int clusterNum = featureNum + tile.sects[i].num;
+			
+			//Check North Side
+			//tile.sects[1].type == board[x][y+1].piece.sect[7];
+			//Create new chain
+			//Create new cluster that points to it
+			//set tile num
+			//merge with other chain
+			
+			/*if (cluster[clusterNum] == null) {
+				
+				
 			}
-			if (rotation == 180) {
-				for (int i = 0; i < 9; i++) {
-					rotateArr[i] = tile.getTilePortionType()[8 - i];
+			else {
+				//Check other sides to merge chain
+			}*/
+			//Check each side that isnt null
+			//If side then merge chains 
+			//set clusters to new chain
+			if (board[x - 1][y] == null ) {
+				//Create new cluster and new chain
+			}
+			else {
+				//Create new cluster and merge 
+				//Create new chain
+			}
+			
+		}
+	}
+	
+	//Always merge b into a
+	public void mergeChains(int a, int b, int type) {
+		switch (type) {
+			case J:
+				//process Jungle merge
+				boardJungle[a].tigerNum += boardJungle[b].tigerNum;
+				for (int i = 0; i < boardJungle[b].lakes.size(); i++) {
+					boardJungle[a].lakes.add(boardJungle[b].lakes.get(i));
+				}
+				for (int i = 0; i < boardJungle[b].dens.size(); i++) {
+					boardJungle[a].dens.add(boardJungle[b].dens.get(i));
+				}
+				break;
+			case T:
+				//process Trail merge
+				break;
+			case L:
+				//process Lake merge
+				break;
+			default:
+				System.out.println("ERROR INVALID TYPE IN MERGE CHAIN: " + type);
+		}
+	}
+	
+	//Return a valid move
+	public move addTile(String tile) {
+		move tempMove;
+		piece tempPiece = transTile(tile);
+		//Get a valid move
+		for (int i = 0; i < posList.size(); i++) {
+			//Get Best move (Valid)
+			position currMove = posList.get(i);
+			int currX = currMove.x;
+			int currY = currMove.y;
+			for (int j = 0; j < 4; j++) {
+				if (isValidMove(rotate(tempPiece, j * 90), currX, currY)) {
+					//Add tile to board
+					block tempBlock = new block();
+					tempBlock.piece = rotate(tempPiece, j * 90);
+					tempBlock.tileName = tile;
+					tempBlock.rot = j * 90;
+					board[currX][currY] = tempBlock;
+					System.out.println("Board X: " + currX + " Y: " + currY);
+					tempMove = new move(currX, currY, j * 90, "", 0);
+					//add new positions to moves list
+					addPossiblePos(currX, currY);
+					//Remove placed move from list
+					posList.remove(new position(currX, currY));
+					return tempMove;
 				}
 			}
-			if (rotation == 270) {
-				rotateArr[0] = tile.getTilePortionType()[6];
-				rotateArr[1] = tile.getTilePortionType()[3];
-				rotateArr[2] = tile.getTilePortionType()[0];
-				rotateArr[3] = tile.getTilePortionType()[7];
-				rotateArr[4] = tile.getTilePortionType()[4];
-				rotateArr[5] = tile.getTilePortionType()[1];
-				rotateArr[6] = tile.getTilePortionType()[8];
-				rotateArr[7] = tile.getTilePortionType()[5];
-				rotateArr[8] = tile.getTilePortionType()[2];
-			}
-			tile.setTilePortionType(rotateArr);
-			tile.setDegrees(rotation);
 		}
-
-		if (!isValid(x, y, tile)) {
-			System.out.println("INVALID, Tile not placed");
-			// 0 = false
-			return 0;
-		}
-		// add tile to board
-		// give tile coords
-		placedTiles.add(tile);
-		board[x][y] = tile;
-		tile.setCol(y);
-		tile.setRow(x);
-		tile.setBoard(this);
-
-		if (x == getTopBound() && x > 0) {
-			setTopBound(x - 1);
-		}
-		if (x == getBottomBound() && x < MAX_ROWS - 1) {
-			setBottomBound(x + 1);
-		}
-		if (y == getLeftBound() && y > 0) {
-			setLeftBound(y - 1);
-		}
-		if (y == getRightBound() && y < MAX_COLS - 1) {
-			setRightBound(y + 1);
-		}
-		return 1;
-		// return true;
-	}
-
-	//Get a valid move for the tile
-	public move addTile(Tile tile) {
-		move tempMove;
-		if (!(getPossibleMoves(tile).isEmpty())) {
-			Random rand = new Random();
-			List<Tile> getPosMoves = getPossibleMoves(tile);
-			Tile addTile = getPosMoves.get(rand.nextInt(getPosMoves.size()));
-			
-			int x = addTile.getRow();
-			int y = addTile.getCol();
-			debugPrint.out("Tile placed at " + x + " " + y);
-			Tile tempTile = new Tile(tile.getTileType());
-			this.placeTile(x, y, addTile.getDegrees(), tempTile);
-
-			if (x == getTopBound() && x > 0) {
-				setTopBound(x - 1);
-			}
-			if (x == getBottomBound() && x < MAX_ROWS - 1) {
-				setBottomBound(x + 1);
-			}
-			if (y == getLeftBound() && y > 0) {
-				setLeftBound(y - 1);
-			}
-			if (y == getRightBound() && y < MAX_COLS - 1) {
-				setRightBound(y + 1);
-			}
-			tempMove = new move(x, y, addTile.getDegrees(), "", 0);
-			if (tile.getTilePortionType()[4] == (TerrainType.DEN)){
-				tempMove.meepPos = 5;
-				tempMove.meep = "TIGER";
-			}
-		}
-		//Possible move list is empty
-		else {
-			tempMove = new move(0, 0, 0, "PASS", -1);
-		}
+		//No valid Moves
+		tempMove = new move(0, 0, 0, "PASS", -1);
 		return tempMove;
 	}
+	
+	//Used to place start tile and enemy tiles
+	public move placeTile(String tile, int x, int y, int rot) {
+		//rotate block
+		piece tempPiece = rotate(transTile(tile), rot);
+		
+		//place tile in first position
+		if (posList.isEmpty()) {
+			System.out.println("EMPTY LIST");
+			//translate tile
+			block tempBlock = new block();
+			tempBlock.piece = tempPiece;
+			tempBlock.tileName = tile;
+			tempBlock.rot = rot;
+			board[x][y] = tempBlock;
+			System.out.println("Board X: " + x + " Y: " + y);
+			//add new positions to moves list
+			addPossiblePos(x, y);
+			//processTile(tempBlock.piece, x, y);
+			move tempMess = new move(x, y, rot, "", -1);
+			return tempMess;
+		}
+		else {
+			//translate tile
+			block tempBlock = new block();
+			tempBlock.piece = tempPiece;
+			tempBlock.tileName = tile;
+			tempBlock.rot = rot;
+			board[x][y] = tempBlock;
+			System.out.println("Board X: " + x + " Y: " + y);
+			//add new positions to moves list
+			addPossiblePos(x, y);
+			//Remove placed move from list
+			position tempPos = new position(x,y);
+			System.out.println(posList.indexOf(tempPos));
+			posList.remove(tempPos);
+			//processTile(tempBlock.piece, x, y);
+			move tempMess = new move(x, y, rot, "", -1);
+			return tempMess;
+		}
+		//translate tile
+		//place tile
+			//Remove location from moves list
+			//Add new positions to move list
+			//Link Chains on all sides or create new chains
+			//Set tile number 
+			
+	}
+	
+	public boolean isValidMove(piece piece, int x, int y) {
+		System.out.println("TRYING X: " + x + " Y: " + y);
+		//Top side
+		if (board[x][y + 1] != null && board[x][y + 1].piece.sects[7].type != piece.sects[1].type){
+			System.out.print("TOP");
+			return false;
+		}
+		//Bottom side
+		if (board[x][y - 1] != null && board[x][y - 1].piece.sects[1].type != piece.sects[7].type){
+			System.out.println("BOTTOM");
+			return false;
+		}
+		//Right side
+		if (board[x + 1][y] != null && board[x + 1][y].piece.sects[3].type != piece.sects[5].type){
+			System.out.println("RIGHT");
+			return false;
+		}
+		//Left side
+		if (board[x - 1][y] != null && board[x - 1][y].piece.sects[5].type != piece.sects[3].type){
+			System.out.println("LEFT");
+			return false;
+		}
+		return true;
+	}
+	
+	
+	public piece transTile(String tileName) {
+		piece tempPiece = new piece();
+		switch(tileName) {
+			case "JJJJ-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0), 
+											new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0),
+											new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0)};
+				break;
+			case "JJJJX":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0), 
+											new sect(J, 1, 0), new sect(D, 2, 0), new sect(J, 1, 0),
+											new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0)};
+				break;
+			case "JJTJX":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0), 
+											new sect(J, 1, 0), new sect(D, 2, 0), new sect(J, 1, 0),
+											new sect(J, 1, 0), new sect(T, 3, 0), new sect(J, 1, 0)};
+				break;
+			case "TTTT-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(T, 2, 0),
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				break;
+			case "TJTJ-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0),
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				break;
+			case "TJJT-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(J, 1, 0),
+											new sect(J, 1, 0), new sect(J, 2, 0), new sect(J, 1, 0)};
+				break;
+			case "TJTT-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(J, 1, 0),
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				break;
+			case "LLLL-":
+				tempPiece.sects = new sect[]{new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0), 
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0),
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0)};
+				break;
+			case "JLLL-":
+				tempPiece.sects = new sect[]{new sect(J, 2, 0), new sect(J, 2, 0), new sect(J, 2, 0), 
+											new sect(L, 1, 0), new sect(J, 2, 0), new sect(L, 1, 0),
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0)};
+				break;
+			case "LLJJ-":
+				tempPiece.sects = new sect[]{new sect(J, 2, 0), new sect(L, 1, 0), new sect(L, 1, 0), 
+											new sect(J, 2, 0), new sect(J, 2, 0), new sect(L, 1, 0),
+											new sect(J, 2, 0), new sect(J, 2, 0), new sect(J, 2, 0)};
+				break;
+			case "JLJL-":
+				tempPiece.sects = new sect[]{new sect(J, 2, 0), new sect(J, 2, 0), new sect(J, 2, 0), 
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0),
+											new sect(J, 3, 0), new sect(J, 3, 0), new sect(J, 3, 0)};
+				break;
+			case "LJLJ-":
+				tempPiece.sects = new sect[]{new sect(L, 2, 0), new sect(L, 2, 0), new sect(L, 2, 0), 
+											new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0),
+											new sect(L, 3, 0), new sect(L, 3, 0), new sect(L, 3, 0)};
+				break;
+			case "LJJJ-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(L, 2, 0), new sect(J, 1, 0), 
+											new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0),
+											new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0)};
+				break;
+			case "JLLJ-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0), 
+											new sect(J, 1, 0), new sect(J, 1, 0), new sect(L, 2, 0),
+											new sect(J, 1, 0), new sect(L, 3, 0), new sect(J, 1, 0)};
+				break;
+			case "TLJT-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(L, 4, 0), new sect(J, 4, 0)};
+				break;
+			case "TLJTP":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(L, 4, 0), new sect(J, 4, 0)};
+				tempPiece.anim = BOAR;
+				break;
+			case "JLTT-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				break;
+			case "JLTTB":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(J, 1, 0), new sect(J, 1, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				tempPiece.anim = BUFFALO;
+				break;
+			case "TLTJ-":
+				tempPiece.sects = new sect[]{new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				break;
+			case "TLTJD":
+				tempPiece.sects = new sect[]{new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				tempPiece.anim = DEER;
+				break;
+			case "TLLL-":
+				tempPiece.sects = new sect[]{new sect(J, 2, 0), new sect(T, 3, 0), new sect(J, 2, 0), 
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0),
+											new sect(L, 1, 0), new sect(L, 1, 0), new sect(L, 1, 0)};
+				break;
+			case "TLTT-":
+				tempPiece.sects = new sect[]{new sect(J, 5, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				break;
+			case "TLTTB":
+				tempPiece.sects = new sect[]{new sect(J, 5, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
+				tempPiece.anim = BOAR;
+				break;
+			case "TLLT-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(L, 3, 0), new sect(L, 3, 0)};
+				break;
+			case "TLLTB":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0), 
+											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
+											new sect(J, 4, 0), new sect(L, 3, 0), new sect(L, 3, 0)};
+				tempPiece.anim = BUFFALO;
+				break;
+			case "LJTJ-":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(L, 3, 0), new sect(J, 4, 0), 
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0),
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0)};
+				break;
+			case "LJTJD":
+				tempPiece.sects = new sect[]{new sect(J, 1, 0), new sect(L, 3, 0), new sect(J, 4, 0), 
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0),
+											new sect(J, 1, 0), new sect(T, 2, 0), new sect(J, 4, 0)};
+				tempPiece.anim = DEER;
+				break;
+			default: 
+				System.out.println("ERROR COULD NOT FIND TILE: " + tileName);
+			}
+		return tempPiece;
+	}
+
+	//Scoring
+	//Jungles
+	//Scored at the end
+	//3 * adjacent complete lake + 5 * adjacent complete den
+	
+	//Lakes 
+	//Unique Prey animals = animalsTypes - # crocs
+	//Complete = 2 * tileNum * 1 + unique prey animals
+	//Incomplete = 1 * tileNum * 1 + unique prey animals
+	
+	//Game-Trails
+	//Unique Prey animals = animalsTypes - # crocs
+	//Complete = 1 * tileNum + unique prey animals
+	//Incomplete = 1 * tileNum + unique prey animals
+	
+	//Dens
+	//# of tiles
 	
 }

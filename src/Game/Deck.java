@@ -3,14 +3,13 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class Deck {
-	private Queue<Tile> tileDeck = new ArrayDeque<>();
+	private Queue<String> tileDeck = new ArrayDeque<>();
 
 	public void addTile(String tile){
-		Tile adding = new Tile(tile);
-		tileDeck.add(adding);
+		tileDeck.add(tile);
 	}
 	
-	public Tile getTop(){
+	public String getTop(){
 		return tileDeck.remove();
 	}
 	

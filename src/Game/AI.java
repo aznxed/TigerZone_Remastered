@@ -40,20 +40,18 @@ public class AI {
 		}
 		//Place first tile
 		public void placeFirstTile(String tile, int x, int y, int rot){
-			Tile tempTile = new Tile(tile);
-			boardA.placeTile(77 - y, 77 + x, rot, tempTile);
-			boardB.placeTile(77 - y, 77 + x, rot, tempTile);
+			boardA.placeTile(tile, 77 - y, 77 + x, rot);
+			boardB.placeTile(tile, 77 - y, 77 + x, rot);
 			return;
 		}
 		
 		//Place a tile ALWAYS ENEMY TILE
 		public void placeTile(String game, String tile, int x, int y, int rot, String meep, int meepPos){
-			Tile tempTile = new Tile(tile);
 			if (game.equals(firstGame)) {
-				boardA.placeTile(77 - y, 77 + x, rot, tempTile);
+				boardA.placeTile(tile, 77 - y, 77 + x, rot);
 			}
 			else {
-				boardB.placeTile(77 - y , 77 + x, rot, tempTile);
+				boardB.placeTile(tile, 77 - y , 77 + x, rot);
 			}
 			return;
 		}
@@ -71,20 +69,18 @@ public class AI {
 			//To ADD Meep Set meep equal to "ADD" and meepPos to -1. Use x and y for coor
 			long startTime = System.currentTimeMillis();
 			
-			Tile newTile = new Tile(tile);
 			move tempMove2;
-			if (game.equals(firstGame)){
-				debugPrint.out("---------------" + boardA.deck.getSize());
+			if (game.equals(firstGame)) {
 				/*if (newTile.equals(boardA.deck.getTop())){
 					System.out.println("ERROR Tile Dealt doesn't equal top tile of deck");
 				}*/
-				tempMove2 = boardA.addTile(newTile);
+				tempMove2 = boardA.addTile(tile);
 			}
 			else {
 				/*if (newTile.equals(boardB.deck.getTop())){
 					System.out.println("ERROR Tile Dealt doesn't equal top tile of deck");
 				}*/
-				tempMove2 = boardB.addTile(newTile);
+				tempMove2 = boardB.addTile(tile);
 			}
 			//Translate x and y coordinates and rotation
 			move currMove = new move(tempMove2.yPos - 77, 77 - tempMove2.xPos , tempMove2.rot, tempMove2.meep, tempMove2.meepPos);
@@ -103,15 +99,6 @@ public class AI {
 		}
 		//Extra Processing Time Do Whatever
 		public void AIProcess(int time){
-			boardA.setTopBound(77 - 1);
-			boardA.setBottomBound(77 + 1);
-			boardA.setLeftBound(77 - 1);
-			boardA.setRightBound(77 + 1);
-			
-			boardB.setTopBound(77 - 1);
-			boardB.setBottomBound(77 + 1);
-			boardB.setLeftBound(77 - 1);
-			boardB.setRightBound(77 + 1);
 			
 			return;
 		}
