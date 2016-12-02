@@ -332,7 +332,7 @@ public class Board {
 			tempBlock.piece = tempPiece;
 			tempBlock.tileName = tile;
 			tempBlock.rot = rot;
-			board[x][y] = tempBlock;
+			board[center][center] = tempBlock;
 			System.out.println("Board X: " + x + " Y: " + y + " Rot: " + rot);
 			//add new positions to moves list
 			addPossiblePos(x, y);
@@ -374,6 +374,9 @@ public class Board {
 	
 	public boolean isValidMove(piece piece, int x, int y) {
 		//System.out.println("TRYING X: " + x + " Y: " + y);
+		if (board[x][y] != null) {
+			return false;
+		}
 		//Top side
 		if (board[x][y + 1] != null && board[x][y + 1].piece.sects[7].type != piece.sects[1].type){
 			//System.out.print("TOP");

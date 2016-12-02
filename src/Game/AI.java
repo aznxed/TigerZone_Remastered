@@ -48,18 +48,18 @@ public class AI {
 		}
 		//Place first tile
 		public void placeFirstTile(String tile, int x, int y, int rot){
-			boardA.placeTile(tile, 77 - y, 77 + x, rot);
-			boardB.placeTile(tile, 77 - y, 77 + x, rot);
+			boardA.placeTile(tile, 77 + x, 77 + y, rot);
+			boardB.placeTile(tile, 77 + x, 77 + y, rot);
 			return;
 		}
 		
 		//Place a tile ALWAYS ENEMY TILE
 		public void placeTile(String game, String tile, int x, int y, int rot, String meep, int meepPos){
 			if (game.equals(firstGame)) {
-				boardA.placeTile(tile, 77 - y, 77 + x, rot);
+				boardA.placeTile(tile, x + 77, y + 77, rot);
 			}
 			else {
-				boardB.placeTile(tile, 77 - y , 77 + x, rot);
+				boardB.placeTile(tile, x + 77 , y + 77, rot);
 			}
 			return;
 		}
@@ -91,7 +91,7 @@ public class AI {
 				tempMove2 = boardB.addTile(tile);
 			}
 			//Translate x and y coordinates and rotation
-			move currMove = new move(tempMove2.yPos - 77, 77 - tempMove2.xPos , tempMove2.rot, tempMove2.meep, tempMove2.meepPos);
+			move currMove = new move(tempMove2.xPos - 77, tempMove2.yPos - 77, tempMove2.rot, tempMove2.meep, tempMove2.meepPos);
 			debugPrint.out("Got a move in: " + (System.currentTimeMillis() - startTime));
 			return currMove;
 		}
