@@ -64,8 +64,9 @@ In Eclipse: Running Junit tests are simple in Eclipse, therefore it is the prefe
  
  In command line/terminal:
  * Go to the downlaoded project directory
- * Enter: javac Board.java Junit.java JunitRunner.java
- *If all the tests pass you will get true 
+ * To compile enter: javac Board.java Junit.java JunitRunner.java 
+ * To run enter: java JunitRunner 
+ * If all the tests pass you will get true 
 
 
 ##Difficulties and Challenges
