@@ -102,6 +102,7 @@ public class Board {
 		return n;
 	}
 
+
 	public boolean isValid(int x, int y, Tile tile) {
 
 		if (board[x][y] != null) {
