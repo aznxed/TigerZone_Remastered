@@ -25,6 +25,7 @@ public class AI {
 			deckB = new Deck();
 			return;
 		}
+		
 		//Add a tile to the Deck
 		public void addDeck(String tile){
 			debugPrint.out("Add " + tile + " to deck");
@@ -32,12 +33,14 @@ public class AI {
 			deckB.addTile(tile);
 			return;
 		}
+		
 		//Initialize the board
 		public void initBoards(){
 			boardA = new Board();
 			boardB = new Board();
 			return;
 		}
+		
 		//Place first tile
 		public void placeFirstTile(String tile, int x, int y, int rot){
 			Tile tempTile = new Tile(tile);
@@ -97,11 +100,13 @@ public class AI {
 		public void placeMeep(int x, int y) {
 			return;
 		}
+		
 		//Remove Tiger at x y
 		public void removeMeep(int x, int y) {
 			return;
 		}
-		//Extra Processing Time Do Whatever
+		
+		//Extra Processing Time
 		public void AIProcess(int time){
 			boardA.setTopBound(77 - 1);
 			boardA.setBottomBound(77 + 1);
@@ -115,6 +120,7 @@ public class AI {
 			
 			return;
 		}
+		
 		public void printBoard(int boardNum) {
 			UI window = new UI();
 			if (boardNum == 1) {
@@ -123,5 +129,11 @@ public class AI {
 			else {
 				window.createUIBoard(boardB);
 			}
+		}
+		
+		public boolean isValid(int x, int y, String tile, boolean gameA) {
+			Tile tempTile = new Tile(tile);
+			if (gameA) { return boardA.isValid(x, y, tempTile); }
+			else { return boardB.isValid(x, y, tempTile); }
 		}
 }

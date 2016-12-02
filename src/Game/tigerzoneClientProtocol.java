@@ -11,15 +11,6 @@ public class tigerzoneClientProtocol {
     private static final int SentJoin = 1;
     private static final int SentName = 2;
     private static final int WasWelcomed = 3;
-    private static final int ReceivedChallenge = 4;
-    private static final int ReceivedRounds = 5;
-    private static final int ReceivedOpponent = 6;
-    private static final int ReceivedStartTile = 7;
-    private static final int ReceivedRemainingTiles = 8;
-    private static final int MakeAMove = 9;
-    private static final int MatchesOver = 11;
-    private static final int RoundsOver = 12;
-    private static final int ChallengeOver = 13;
     private static final int Finished = 14;
 
     private int state = WAITING;
@@ -258,16 +249,10 @@ public class tigerzoneClientProtocol {
             	else if (!split[5].equals(playerName)){
         			//Opponent placed a tile
         			//GAME <gid> MOVE <#> PLAYER <pid> TILE <tile> UNPLACEABLE RETRIEVE TIGER AT <x> <y>
-        			if (split[6].equals("PLACED")){
-	        			if (true) {
-	        				AI.placeTile(split[1], split[7], Integer.valueOf(split[9]), Integer.valueOf(split[10]), Integer.valueOf(split[11]), "", -1);
-	        				}
-	        			else {
-	        				AI.placeTile(split[1], split[7], Integer.valueOf(split[9]), Integer.valueOf(split[10]), Integer.valueOf(split[11]), split[12], Integer.valueOf(split[13]));
-	        			}
+        			if (split[6].equals("PLACED")) {
+        				AI.placeTile(split[1], split[7], Integer.valueOf(split[9]), Integer.valueOf(split[10]), Integer.valueOf(split[11]), "", -1);
         			}
         			//Tile is Unplaceable
-        			//TODO: Make sure this is correct format
         			else if(split[6].equals("TILE")){
         				//Pass
         				if (split[9].equals("PASSED")){

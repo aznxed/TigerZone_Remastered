@@ -7,9 +7,8 @@ import Game.tigerzoneServerProtocol;
 public class protocolTest {
 	public static void main(String[] args) throws IOException {
 		boolean stop = false;
-		String sIn = " ";
+		
 		String sOut = " ";
-		String aIn = " ";
 		String aOut = " ";
 		
 		//Create server and two clients

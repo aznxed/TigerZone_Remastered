@@ -39,18 +39,11 @@ public class tigerzoneServerProtocol {
 
 	private int timeToMatch = 3;
     private String tourPassword = "PersiaRocks!";
-    private String playPassword = "Obiwan77";
-	//private String startingTile = "TLTJ-";
-	//private String startingTile = "TLLLC";
-	private String startingTile = "TLTJ-";
+	private String startingTile = "TLLLC";
 	private String tileString = "JJJJX JLTT- LLLL- LJTJ- JLJL- JJTJX TLLL- TLLT- TTTT- JJJJX LLLL- JJTJX TLTT-";
-	//private String tileString = "JJJJ- JJJJX JJTJX TTTT- TJTJ- TJJT- TJTT- LLLL- JLLL- LLJJ- JLJL- LJLJ- LJJJ- JLLJ- TLJT- TLJTP JLTT- JLTTB TLTJ- TLTJD TLLL- TLTT- TLTTP TLLT- TLLTB LJTJ- LJTJD";
-	//private String tileString = "JJJJ- JJJJX";
-	//private String tileString = "JJJJ- JJJJX";
 	private String[] deck = tileString.split(" ");
 	private int moveNum = 0;
 	private move botMove;
-	private move playerMove;
 	private String botID = "TEAMFOO";
 	private String currentTile = "";
 	private String playerName = "";
@@ -241,15 +234,9 @@ public class tigerzoneServerProtocol {
         	//Receive playerMove
         	//Check valid move by player
         	String[] split = theInput.split(" ");
-        	//TODO: Remove later
-        	if (theInput.equals(null) || theInput.equals("")){
-        		System.out.println("FORFEITED: ILLEGAL MESSAGE RECEIVED");
-        		theOutput = "GAME " + (gameID ? "A" : "B") + " OVER PLAYER " + playerName + " " + "FORFEITED" + " PLAYER " + botID + " " + "WIN"; 
-        		state = SentEndChallenges;
-        	}
-        	else if (split[0].equals("GAME") && split[2].equals("MOVE")) {
-        		if (!((moveTime * 1000) < (System.currentTimeMillis() - moveStartTime))){
-        			//Check player move time
+        	if (split[0].equals("GAME") && split[2].equals("MOVE")) {
+    			//Check player move time
+        		if (!((moveTime * 1000) < (System.currentTimeMillis() - moveStartTime))) {
         			
         		}
         		//Out of time Forfeit
@@ -263,27 +250,6 @@ public class tigerzoneServerProtocol {
         		System.out.println("FORFEITED: ILLEGAL TILE PLACEMENT");
         		state = SentEndChallenges;
         	}
-        	/*
-        	if (true) {
-            	String[] split = theInput.split(" ");
-        		theOutput = theOutput + split[5] + " AT " + split[7] + " " + split[8] + " " + split[9] + " TIGER " + split[11];
-        	}
-        	//Illegal Tile Placement
-        	else if (true) {
-        	theOutput = theOutput + "FORFEITED: ILLEGAL TILE PLACEMENT";
-        	}
-        	//Illegal Meeple Placement
-        	else if (true) {
-        	theOutput = theOutput + "FORFEITED: ILLEGAL MEEPLE PLACEMENT";
-        	}
-        	//Invalid Meeple Placement
-        	else if (true) {
-        	theOutput = theOutput + "FORFEITED: ILLEGAL INVALID MEEPLE PLACEMENT";
-        	}
-        	//Illegal Message Received
-        	else if (true) {
-        	theOutput = theOutput + "FORFEITED: ILLEGAL MESSAGE RECEIVED";
-        	}*/
         }
         
         else if (state == SentMoveMade) {
