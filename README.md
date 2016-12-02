@@ -27,8 +27,10 @@ The game was built using behavior-driven design principles. Functions and method
 
 The UI was developed in it's own class and is independent of the game. According to Robert Martin, a good architecture hangs the UI off application like an appendix. So, that it can be removed if it doesn't work. 
 
-The TCP client
 
+The TCP client/server
+
+The tcp code was designed to be modular enough to allow for seperate client and server executables as well as a protocolTest which can be used to simulate a tigerzone game on a single machine. tcpClient is the main file used to connect to the tournament server. It accepts the following arguments: <host> <port> <serverPassword> <PlayerID> <PlayerPassword>. tcpServer can be used as a fake server with args <port>. protocolTest can be used without arguments to simulate messages sent and received from the server.
 
 
 ##How to Build the client
