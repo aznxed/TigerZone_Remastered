@@ -8,19 +8,13 @@ public class tcpServer {
 		System.out.println("Starting Server");
 		
 		int portNumber;
+		if (args.length != 1) {
+			System.err.println("Usage: java tcpServer <port number>");
+			System.exit(1);
+		}
 		
-		if (false) {
-			if (args.length != 1) {
-				System.err.println("Usage: java tcpServer <port number>");
-				System.exit(1);
-			}
-			
-			//portNumber is specified in first command line argument
-			portNumber = Integer.parseInt(args[0]);
-		}
-		else {
-				portNumber = 10;
-		}
+		//portNumber is specified in first command line argument
+		portNumber = Integer.parseInt(args[0]);
 		
 		System.out.println("Connecting to Port: " + portNumber);
 		//TODO: Do I need to support multiple clients? 
