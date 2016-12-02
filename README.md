@@ -57,7 +57,22 @@ To run individual tests, simply highlight the method and run it as a Junit test.
 
 ##Difficulties and Challenges
 
-
-
-
+# Process
+## User Stories
+As a player, I want to play against an AI 
+As a player, I want to place a tile with/without a rotation on the board so that I can make a move.  
+As a player, I want to check the score and number of meeples so that I can see who’s winning.
+As a player, I want to see the remaining tiles so that I can calculate my odds.
+As a player, I want to see the valid board placements for a tile so that I can make my move easier. 
+As a server, I want to send tiles to the players.
+As a server, I want to receive moves from the players. 
+As a server, I want to check valid placement of tiles.
+As a server, I want to score completed tile chains. 
+As a server, I want to declare a victor for the game. 
+## Sprints
+![](http://i66.tinypic.com/23pm5u.png)
+![](http://i65.tinypic.com/33jmydd.png)
+![](http://i64.tinypic.com/2uxwco8.png)
+![](http://i67.tinypic.com/24v04xz.png)
+![](http://i67.tinypic.com/33kdh5l.png)
 
