@@ -25,6 +25,14 @@ public class AI {
 			deckB = new Deck();
 			return;
 		}
+		
+		public void initBoards() {
+			boardA = new Board();
+			boardB = new Board();
+			boardA.initBoards(77);
+			boardB.initBoards(77);
+		}
+		
 		//Add a tile to the Deck
 		public void addDeck(String tile){
 			debugPrint.out("Add " + tile + " to deck");
@@ -33,7 +41,7 @@ public class AI {
 			return;
 		}
 		//Initialize the board
-		public void initBoards(){
+		public void Boards(){
 			boardA = new Board();
 			boardB = new Board();
 			return;

@@ -78,15 +78,17 @@ public class UI {
 	public void createUIBoard(Board gameBoard) {
 		JFrame frame = new JFrame();
 		frame.setPreferredSize(new Dimension(800, 1000));
+		System.out.println("Top: " + gameBoard.topBound + " Bottom: " + gameBoard.bottomBound
+							+ " Right: " + gameBoard.rightBound + " Left: " + gameBoard.leftBound);
 	
-		JPanel jp = new JPanel(new GridLayout(gameBoard.bottomBound
-				- gameBoard.topBound + 1, gameBoard.rightBound
-				- gameBoard.leftBound + 1, 0, 0));
+		JPanel jp = new JPanel(new GridLayout(gameBoard.rightBound
+				- gameBoard.leftBound + 1, gameBoard.topBound
+				- gameBoard.bottomBound + 1, 0, 0));
 	
 		frame.pack();
-		for (int i = gameBoard.topBound; i <= gameBoard.bottomBound; i++) {
-			for (int j = gameBoard.leftBound; j <= gameBoard
-					.rightBound; j++) {
+		for (int j = gameBoard.rightBound; j >= gameBoard.leftBound; j--) {
+			for (int i = gameBoard.bottomBound; i <= gameBoard
+					.topBound; i++) {
 				if (gameBoard.getBoard()[i][j] == null) {
 					JLabel j29 = new JLabel();
 					j29.setIcon(new ImageIcon(imagePath + "Tile29.png"));
@@ -95,13 +97,16 @@ public class UI {
 				
 				else {
 					JLabel j1 = new JLabel();
+					System.out.println("Print Tile Name: " + gameBoard.getBoard()[i][j].tileName
+							+ " X: " + j + " Y: " + i);
 					ImageIcon II = new ImageIcon(imagePath + "Tile"
-									+ Integer.toString(getType(gameBoard.getBoard()[i][j].tileName))
+									+ Integer.toString(getType(gameBoard.getBoard()[i][j].tileName
+											))
 									+ "."
 									+ Integer.toString(gameBoard.getBoard()[i][j]
 											.rot) + ".png");
 					Image image = II.getImage(); // transform it
-					int tileHeight = gameBoard.bottomBound - gameBoard.topBound;
+					int tileHeight = gameBoard.topBound - gameBoard.bottomBound;
 					int tileWidth = gameBoard.rightBound - gameBoard.leftBound;
 					//System.out.println("Height: " + tileHeight);
 					//System.out.println("Width: " + tileWidth);

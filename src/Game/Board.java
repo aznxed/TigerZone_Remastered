@@ -117,8 +117,15 @@ public class Board {
 		public prey preyNum;
 	}
 	
-	public block[][] getBoard(){
+	public block[][] getBoard() {
 		return board;
+	}
+	
+	public void expandBounds(int x, int y) {
+		if (y + 1 > topBound) { topBound = y + 1; System.out.println("NEW TOP " + (y + 1));}
+		if (y - 1 < bottomBound) { bottomBound = y - 1;  System.out.println("NEW BOT " + (y - 1));}
+		if (x + 1 > rightBound) { rightBound = x + 1;  System.out.println("NEW RIGHT " + (x + 1));}
+		if (x - 1 < leftBound) { leftBound = x -1;  System.out.println("NEW LEFT " + (x - 1));}
 	}
 	
 	//Rotate piece
@@ -129,14 +136,14 @@ public class Board {
 			case 0:
 				return piece;
 			case 90: 
-				tempPiece.sects[0] = piece.sects[6];
-				tempPiece.sects[1] = piece.sects[3];
-				tempPiece.sects[2] = piece.sects[0];
-				tempPiece.sects[3] = piece.sects[7];
-				tempPiece.sects[5] = piece.sects[1];
-				tempPiece.sects[6] = piece.sects[8];
-				tempPiece.sects[7] = piece.sects[5];
-				tempPiece.sects[8] = piece.sects[2];
+				tempPiece.sects[0] = piece.sects[2];
+				tempPiece.sects[1] = piece.sects[5];
+				tempPiece.sects[2] = piece.sects[8];
+				tempPiece.sects[3] = piece.sects[1];
+				tempPiece.sects[5] = piece.sects[7];
+				tempPiece.sects[6] = piece.sects[0];
+				tempPiece.sects[7] = piece.sects[3];
+				tempPiece.sects[8] = piece.sects[6]; 
 				break;
 			case 180: 
 				tempPiece.sects[0] = piece.sects[8];
@@ -148,15 +155,15 @@ public class Board {
 				tempPiece.sects[7] = piece.sects[1];
 				tempPiece.sects[8] = piece.sects[0];
 				break;
-			case 270: 
-				tempPiece.sects[0] = piece.sects[2];
-				tempPiece.sects[1] = piece.sects[5];
-				tempPiece.sects[2] = piece.sects[8];
-				tempPiece.sects[3] = piece.sects[1];
-				tempPiece.sects[5] = piece.sects[7];
-				tempPiece.sects[6] = piece.sects[0];
-				tempPiece.sects[7] = piece.sects[3];
-				tempPiece.sects[8] = piece.sects[6];
+			case 270:
+				tempPiece.sects[0] = piece.sects[6];
+				tempPiece.sects[1] = piece.sects[3];
+				tempPiece.sects[2] = piece.sects[0];
+				tempPiece.sects[3] = piece.sects[7];
+				tempPiece.sects[5] = piece.sects[1];
+				tempPiece.sects[6] = piece.sects[8];
+				tempPiece.sects[7] = piece.sects[5];
+				tempPiece.sects[8] = piece.sects[2];
 				break;
 			default:
 				System.out.println("ERROR INVALID ROTATION: " + rot);
@@ -167,6 +174,10 @@ public class Board {
 	public void initBoards(int tiles) {
 		size = (tiles * 2) - 1;
 		center = tiles;
+		topBound = center + 1;
+		bottomBound = center - 1;
+		rightBound = center + 1;
+		leftBound = center - 1;
 		
 		//2d Array of Tiles (Path to tile.png, int rotation, int[9] meep)
 		//Used to Display to map
@@ -191,23 +202,23 @@ public class Board {
 	
 	//Adds new possible tile positions to tileList
 	public void addPossiblePos(int x, int y){
+		expandBounds(x, y);
 		if (board[x + 1][y] == null) {
-			System.out.println("ADD NEW POS1");
+			//System.out.println("ADD NEW POS1");
 			posList.add(new position((x + 1), y));
 		}
 		if (board[x - 1][y] == null) {
 			posList.add(new position((x - 1), y));
-			System.out.println("ADD NEW POS2");
+			//System.out.println("ADD NEW POS2");
 		}
 		if (board[x][y + 1] == null) {
 			posList.add(new position(x, (y + 1)));
-			System.out.println("ADD NEW POS3");
+			//System.out.println("ADD NEW POS3");
 		}
 		if (board[x][y - 1] == null) {
 			posList.add(new position(x, (y - 1)));
-			System.out.println("ADD NEW POS4");
+			//System.out.println("ADD NEW POS4");
 		}
-		posList.remove(new position(x, y));
 	}
 	
 	//Generate Clusters and chains
@@ -270,9 +281,11 @@ public class Board {
 	
 	//Return a valid move
 	public move addTile(String tile) {
+		System.out.println("PLACING TILE: " + tile);
 		move tempMove;
 		piece tempPiece = transTile(tile);
 		//Get a valid move
+		System.out.println("Position List Size: " + posList.size());
 		for (int i = 0; i < posList.size(); i++) {
 			//Get Best move (Valid)
 			position currMove = posList.get(i);
@@ -286,13 +299,18 @@ public class Board {
 					tempBlock.tileName = tile;
 					tempBlock.rot = j * 90;
 					board[currX][currY] = tempBlock;
-					System.out.println("Board X: " + currX + " Y: " + currY);
+					System.out.println("Board X: " + currX + " Y: " + currY + " Rot: " + tempBlock.rot);
 					tempMove = new move(currX, currY, j * 90, "", 0);
 					//add new positions to moves list
 					addPossiblePos(currX, currY);
+					//Update bounds
+					expandBounds(currX, currY);
 					//Remove placed move from list
-					posList.remove(new position(currX, currY));
+					posList.remove(i);
 					return tempMove;
+				}
+				else {
+					System.out.println("Not a valid move");
 				}
 			}
 		}
@@ -315,7 +333,7 @@ public class Board {
 			tempBlock.tileName = tile;
 			tempBlock.rot = rot;
 			board[x][y] = tempBlock;
-			System.out.println("Board X: " + x + " Y: " + y);
+			System.out.println("Board X: " + x + " Y: " + y + " Rot: " + rot);
 			//add new positions to moves list
 			addPossiblePos(x, y);
 			//processTile(tempBlock.piece, x, y);
@@ -329,7 +347,7 @@ public class Board {
 			tempBlock.tileName = tile;
 			tempBlock.rot = rot;
 			board[x][y] = tempBlock;
-			System.out.println("Board X: " + x + " Y: " + y);
+			System.out.println("Board X: " + x + " Y: " + y + " Rot: " + rot);
 			//add new positions to moves list
 			addPossiblePos(x, y);
 			//Remove placed move from list
@@ -349,26 +367,31 @@ public class Board {
 			
 	}
 	
+	public void print() {
+		UI UI = new UI();
+		UI.createUIBoard(this);
+	}
+	
 	public boolean isValidMove(piece piece, int x, int y) {
-		System.out.println("TRYING X: " + x + " Y: " + y);
+		//System.out.println("TRYING X: " + x + " Y: " + y);
 		//Top side
 		if (board[x][y + 1] != null && board[x][y + 1].piece.sects[7].type != piece.sects[1].type){
-			System.out.print("TOP");
+			//System.out.print("TOP");
 			return false;
 		}
 		//Bottom side
 		if (board[x][y - 1] != null && board[x][y - 1].piece.sects[1].type != piece.sects[7].type){
-			System.out.println("BOTTOM");
+			//System.out.println("BOTTOM");
 			return false;
 		}
 		//Right side
 		if (board[x + 1][y] != null && board[x + 1][y].piece.sects[3].type != piece.sects[5].type){
-			System.out.println("RIGHT");
+			//System.out.println("RIGHT");
 			return false;
 		}
 		//Left side
 		if (board[x - 1][y] != null && board[x - 1][y].piece.sects[5].type != piece.sects[3].type){
-			System.out.println("LEFT");
+			//System.out.println("LEFT");
 			return false;
 		}
 		return true;
@@ -491,7 +514,7 @@ public class Board {
 											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
 											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};
 				break;
-			case "TLTTB":
+			case "TLTTP":
 				tempPiece.sects = new sect[]{new sect(J, 5, 0), new sect(T, 2, 0), new sect(J, 1, 0), 
 											new sect(T, 2, 0), new sect(T, 2, 0), new sect(L, 3, 0),
 											new sect(J, 4, 0), new sect(T, 2, 0), new sect(J, 1, 0)};

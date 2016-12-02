@@ -1,10 +1,12 @@
 package testing;
 
+import java.io.IOException;
+
 import Game.Board;
 import Game.Deck;
 
 public class boardTest {
-	public static void main(){
+	public static void main(String[] args) throws IOException {
 		//Initialize board and deck
 		Board gameBoard = new Board();
 		Deck deck = new Deck();
@@ -22,6 +24,13 @@ public class boardTest {
 		deck.addTile("TLLTB");
 		deck.addTile("TJTT-");
 		deck.addTile("TLTTP");
+		
+		gameBoard.initBoards(deck.getSize());
+		gameBoard.placeTile(deck.getTop(), 11, 12, 0);
+		
+		int size = deck.getSize();
+		
+		gameBoard.placeTile(deck.getTop(), size, size, 0);
 		
 		//Get every tile from the deck and print it out
 		while (!deck.isEmpty()) {

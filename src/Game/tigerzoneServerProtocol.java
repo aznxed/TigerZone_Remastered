@@ -211,7 +211,7 @@ public class tigerzoneServerProtocol {
         	//Set output Message to botMove
         	theOutput = "GAME " + (gameID ? "B" : "A") + " MOVE " + moveNum + " PLAYER " + botID;
         	//Bot move could not be made output pass
-        	if (botMove.meep.equals("PASSED")) {
+        	if (botMove.meep.equals("PASS")) {
         		theOutput = theOutput + " TILE " + currentTile + " UNPLACEABLE PASSED";
         	}
         	//Output tile placed
