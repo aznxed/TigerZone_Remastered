@@ -2,6 +2,7 @@ package Game;
 
 import java.net.*;
 import java.io.*;
+import testing.debugPrint;
 
 public class tcpClient {
 	public static void main(String[] args) throws IOException {
@@ -12,6 +13,8 @@ public class tcpClient {
 		String serverPassword = "";
 		String userName = "";
 		String userPassword = "";
+		
+		debugPrint debugPrint = new debugPrint();
 		
 		//If not enough command arguments
 		if (args.length < 5 ) {
@@ -58,7 +61,7 @@ public class tcpClient {
 		            System.out.println("\nUser: " + userMessage + "\n");
 		        }
 		    }
-			System.out.println("ERROR OUT OF WHILE LOOP CLIENT");
+			debugPrint.out("ERROR OUT OF WHILE LOOP CLIENT");
 		//Unknown host
 		} catch (UnknownHostException e) {
 		    System.err.println("Don't know about host " + hostName);
