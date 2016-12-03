@@ -35,7 +35,7 @@ __ex. java -classpath . Game.tcpClient 10.136.73.30 4444 TIGERZONE TEAMO IAMO__
 ##Unit and Acceptance Tests
 __"You could test all your business rules, all your presenters...without the application server, the web running, anything running, at 30,000 feet, while sipping a gin and tonic" - Robert C. Martin__
 
-###Unit Testing
+##Unit Testing
 For unit testing, we decided to use JUnit. JUnit is a unit testing framework for Java programming language. Our Junit test file can be found under src/Game/Junit.java. We have set up the tests so they run in alphabetical order. 
  
 * TestA: tests that a tile is being placed on the board
@@ -59,11 +59,8 @@ In command line/terminal:
  * To run enter: java JunitRunner 
  * If all the tests pass you will get true
 
-###Acceptance Testing
+##Acceptance Testing
 Testing was done using the a student's server at the University of Florida's CISE department and was tested against other AI's to ensure valid moves. 
-
-##How to Run Tests
-To run individual tests, simply highlight the method and run it as a Junit test.
 
 ##Difficulties and Challenges
 __Shared Code__
