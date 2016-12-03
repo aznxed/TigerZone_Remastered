@@ -12,7 +12,7 @@ __(FirstName LastName -> GitHub Username)__
 
 ##How to Build the client
 
-__ We recommend using Eclipse. Which can be found at (https://eclipse.org/downloads/) This project can be opened in eclipse by clicking "Open Project from File System" __
+__ We recommend using Eclipse. Which can be found at [https://eclipse.org/downloads/] This project can be opened in eclipse by clicking "Open Project from File System" __
 
 ![](http://i64.tinypic.com/25koqrk.png)
 
