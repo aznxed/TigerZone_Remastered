@@ -11,6 +11,9 @@ __(FirstName LastName -> GitHub Username)__
 * Luc Olsthoorn -> Luc-Olsthoorn
 
 ##How to Build the client
+__We recommend using Eclipse. Which can be found at https://eclipse.org/downloads/ This project can be opened in eclipse by clicking "Open Project from File System" You may have to remove __
+![](http://i64.tinypic.com/25koqrk.png)
+
 1. Download the ZIP from the repository and unzip it
 2. Open up a command prompt or terminal and change directory into the folder
 3. Execute __javac -cp "junit.jar" .\src\Game\*.java .\src\testing\*.java__
