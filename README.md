@@ -12,13 +12,14 @@ __(FirstName LastName -> GitHub Username)__
 
 ##How to Build the client
 
-__ We recommend using Eclipse. Which can be found at [https://eclipse.org/downloads/] This project can be opened in eclipse by clicking "Open Project from File System" __
+We recommend using Eclipse. Which can be found at [https://eclipse.org/downloads/] This project can be opened in eclipse by clicking "Open Project from File System"
 
 ![](http://i64.tinypic.com/25koqrk.png)
 
 ![](http://i68.tinypic.com/sxkemo.png)
 
 Using command prompt:
+
 1. Download the ZIP from the repository and unzip it
 2. Open up a command prompt or terminal and change directory into the folder
 3. Execute __javac -cp "junit.jar" .\src\Game\*.java .\src\testing\*.java__
