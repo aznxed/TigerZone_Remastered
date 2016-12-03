@@ -1,5 +1,8 @@
 ![](http://i68.tinypic.com/2yyz9u9.jpg)
-#Welcome to the TigerZone_Remastered wiki!
+#Welcome to the TigerZone_Remastered!
+
+More information, such as architecture and design can be found on at our Wiki
+(https://github.com/aznxed/TigerZone_Remastered/wiki)
 
 ##Team Members
 __(FirstName LastName -> GitHub Username)__
@@ -58,6 +61,10 @@ In command line/terminal:
  * To compile enter: javac Board.java Junit.java JunitRunner.java 
  * To run enter: java JunitRunner 
  * If all the tests pass you will get true
+ 
+Ex.
+
+![](http://i64.tinypic.com/359yfif.png)
 
 ##Acceptance Testing
 Testing was done using the a student's server at the University of Florida's CISE department and was tested against other AI's to ensure valid moves. 
