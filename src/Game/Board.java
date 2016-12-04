@@ -227,6 +227,14 @@ public class Board {
 			//Generate a new cluster in array for 
 			int clusterNum = featureNum + tile.sects[i].num;
 			
+			//Tile placed
+			//For every sector
+			//Create new Chain and a cluster that points to it if there is not one already
+			
+			//Detect if there is a side next to it
+			//If yes then merge chain
+			//Redirect all clusters to new chain
+			
 			//Check North Side
 			//tile.sects[1].type == board[x][y+1].piece.sect[7];
 			//Create new chain
@@ -310,7 +318,7 @@ public class Board {
 					return tempMove;
 				}
 				else {
-					System.out.println("Not a valid move");
+					//System.out.println("Not a valid move");
 				}
 			}
 		}
