@@ -24,6 +24,9 @@ public class Board {
 	public Deck deck = new Deck();
 	private Tile[][] board = new Tile[MAX_ROWS][MAX_COLS];
 	private List<Tile> placedTiles = new ArrayList<Tile>();
+	
+	//TESTING
+	public int tigers = 7;
 
 	/*******************************************/
 	/******* Getter and Setter Functions *******/
@@ -96,6 +99,40 @@ public class Board {
 		if (x < MAX_ROWS) {
 			if (board[x + 1][y] != null) {
 				n.add(board[x + 1][y]);
+			}
+		}
+
+		return n;
+	}
+	
+	public List<Integer> getNeighbors2(int x, int y) {
+		List<Integer> n = new ArrayList<Integer>();
+
+		//TOP IS OPEN
+		if (x > 0) {
+			if (board[x - 1][y] == null) {
+				n.add(1);
+			}
+		}
+		
+		//LEFT IS OPEN
+		if (y > 0) {
+			if (board[x][y - 1] == null) {
+				n.add(2);
+			}
+		}
+
+		//RIGHT IS OPEN
+		if (y < MAX_COLS) {
+			if (board[x][y + 1] == null) {
+				n.add(3);
+			}
+		}
+
+		//BOTTOM IS OPEN
+		if (x < MAX_ROWS) {
+			if (board[x + 1][y] == null) {
+				n.add(4);
 			}
 		}
 
@@ -437,17 +474,118 @@ public class Board {
 			if (y == getRightBound() && y < MAX_COLS - 1) {
 				setRightBound(y + 1);
 			}
+			
 			tempMove = new move(x, y, addTile.getDegrees(), "", 0);
-			if (tile.getTilePortionType()[4] == (TerrainType.DEN)){
-				tempMove.meepPos = 5;
-				tempMove.meep = "TIGER";
+			
+			//SCORING STATS
+			if(tigers > 0){
+				//PLACE ON DEN
+				if (tile.getTilePortionType()[4] == (TerrainType.DEN)){
+					tempMove.meepPos = 5;
+					tempMove.meep = "TIGER";
+					tigers--;
+				}
+				
+				else{
+					List<Integer> open = getNeighbors2(x,y);
+					if(open.size() != 0){
+						for(int a = 0; a < open.size(); a++){
+							if(open.get(a) == 1)//top
+							{
+								if(tile.getTilePortionType()[1] == (TerrainType.LAKE)){
+									//if(!open.contains(2) || )
+								}
+								
+								else if((tile.getTilePortionType()[1] == (TerrainType.GAMETRAIL))
+										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+									tempMove.meepPos = 2;
+									tempMove.meep = "TIGER";
+									tigers--;
+									break;
+								}
+							}
+							
+							else if(open.get(a) == 2)//left
+							{
+								if(tile.getTilePortionType()[3] == (TerrainType.LAKE)){
+									//if(!open.contains(2) || )
+								}
+								
+								else if((tile.getTilePortionType()[3] == (TerrainType.GAMETRAIL))
+										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+									tempMove.meepPos = 4;
+									tempMove.meep = "TIGER";
+									tigers--;
+									break;
+								}
+							}
+							
+							else if(open.get(a) == 3)//right
+							{
+								if(tile.getTilePortionType()[5] == (TerrainType.LAKE)){
+									//if(!open.contains(2) || )
+								}
+								
+								else if((tile.getTilePortionType()[5] == (TerrainType.GAMETRAIL))
+										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+									tempMove.meepPos = 6;
+									tempMove.meep = "TIGER";
+									tigers--;
+									break;
+								}
+							}
+							
+							else if(open.get(a) == 4)//bottom
+							{
+								if(tile.getTilePortionType()[7] == (TerrainType.LAKE)){
+									//if(!open.contains(2) || )
+								}
+								
+								else if((tile.getTilePortionType()[7] == (TerrainType.GAMETRAIL))
+										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+									tempMove.meepPos = 8;
+									tempMove.meep = "TIGER";
+									tigers--;
+									break;
+								}
+							}
+						}
+					}
+				}
 			}
+			
+			
 		}
 		//Possible move list is empty
 		else {
 			tempMove = new move(0, 0, 0, "PASS", -1);
 		}
+		
+		System.out.println("A Tiger was placed at " + tempMove.meepPos + "at tile " + tile.getTileType());
 		return tempMove;
 	}
+	
+	public static void main(String[] args){
+		Board board = new Board();
+		Deck deck = new Deck();
+	
+		deck.addTile("JJJJ-");
+		deck.addTile("JJJJX");
+		deck.addTile("TJTT-");
+		deck.addTile("TJTJ-");
+		deck.addTile("TTTT-");
+		
+		
+		board.addTile(deck.getTop());
+		board.addTile(deck.getTop());
+		board.addTile(deck.getTop());
+		board.addTile(deck.getTop());
+		board.addTile(deck.getTop());
+		
+		UI ui = new UI();
+		ui.createUIBoard(board);
+		
+	}
+	
 	
 }
