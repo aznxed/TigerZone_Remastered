@@ -7,18 +7,27 @@ enum TerrainType {
 }
 
 public class Tile {
+	private int conquered = 0;
 	private int row;
 	private int col;
 	private String terrainTypeString;
 	private int degrees = 0;
-	
+
 	private Board board;
 	private TerrainType[] tilePortionType = new TerrainType[9];
-	
+
 	/*******************************************/
 	/******* Getter and Setter Functions *******/
 	/*******************************************/
-	
+
+	public void setConquered()
+	{
+		this.conquered = 1;
+	}
+	public int getConquered()
+	{
+		return conquered;
+	}
 	public int getRow() {
 		return row;
 	}

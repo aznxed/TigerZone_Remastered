@@ -8,6 +8,9 @@ import Game.TerrainType;
 import Game.move;
 import testing.debugPrint;
 import Game.UI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Comparator;
 
 public class Board {
 	// Boundaries of the Board
@@ -24,7 +27,7 @@ public class Board {
 	public Deck deck = new Deck();
 	private Tile[][] board = new Tile[MAX_ROWS][MAX_COLS];
 	private List<Tile> placedTiles = new ArrayList<Tile>();
-	
+
 	//TESTING
 	public int tigers = 7;
 
@@ -104,7 +107,7 @@ public class Board {
 
 		return n;
 	}
-	
+
 	public List<Integer> getNeighbors2(int x, int y) {
 		List<Integer> n = new ArrayList<Integer>();
 
@@ -114,7 +117,7 @@ public class Board {
 				n.add(1);
 			}
 		}
-		
+
 		//LEFT IS OPEN
 		if (y > 0) {
 			if (board[x][y - 1] == null) {
@@ -144,7 +147,7 @@ public class Board {
 		if (board[x][y] != null) {
 			return false;
 		}
-		
+
 		if (placedTiles.isEmpty()) {
 			return true;
 		}
@@ -154,11 +157,11 @@ public class Board {
 			if (nbors.isEmpty()) {
 				return false;
 			}
-			
+
 			else{
 				return true;
 			}
-			
+
 		}
 	}
 
@@ -198,7 +201,7 @@ public class Board {
 			rotateTile.setDegrees(degrees);
 			rotateTile.setCol(tile.getCol());
 			rotateTile.setRow(tile.getRow());
-			
+
 			return rotateTile;
 		}
 		rotateTile.setTilePortionType(tile.getTilePortionType());
@@ -334,7 +337,7 @@ public class Board {
 			for (int j = getLeftBound(); j <= getRightBound(); j++) {
 				if (isValid(i, j, tile)) {
 					List<Integer> validOrients = getValidOrients(i, j, tile);
-					
+
 					for (int k = 0; k < validOrients.size(); k++) {
 						Tile newTile = new Tile(tile.getTileType());
 						newTile.setRow(i);
@@ -342,7 +345,7 @@ public class Board {
 						debugPrint.out(i + " ");
 						debugPrint.out(j);
 						possibleMoves.add(rotateTile(newTile, validOrients.get(k)));
-						
+
 					}
 				}
 			}
@@ -350,7 +353,7 @@ public class Board {
 
 		return possibleMoves;
 	}
-	
+
 	public Tile[][] getBoard() {
 		return this.board;
 	}
@@ -370,8 +373,8 @@ public class Board {
 		board[x][y] = null;
 		placedTiles.remove(tile);
 	}
-	
-	
+
+
 	/********************************/
 	/******* Player Functions *******/
 	/********************************/
@@ -385,7 +388,7 @@ public class Board {
 			// 0 = false
 			return 0;
 		}
-		
+
 		if(rotation != 0) {
 			TerrainType[] rotateArr = new TerrainType[9];
 			if (rotation == 90) {
@@ -448,18 +451,90 @@ public class Board {
 		// return true;
 	}
 
+	private List<Tile> possiblePlaces;
+
+	class option {
+		private int score; //calculated score
+		private int ref;//refers to the tile position in possible moves
+		public int getRef() {
+			return ref;
+		}
+		public int getScore() {
+			return score;
+		}
+		public void setRef(int temp) {
+			this.ref = temp;
+		}
+
+		public void setScore(int temp) {
+			this.score = temp;
+		}
+
+	}
+	public void sortList(List<option> list)
+	{
+		{
+			Collections.sort(list, new Comparator<option>() {
+				@Override
+				public int compare(final option object1, final option object2) {
+					return object1.score < object2.score ? -1
+							: object1.score > object2.score ? 1
+							: 0;
+				}
+			});
+		}
+	}
 	//Get a valid move for the tile
 	public move addTile(Tile tile) {
-		move tempMove;
-		if (!(getPossibleMoves(tile).isEmpty())) {
-			Random rand = new Random();
-			List<Tile> getPosMoves = getPossibleMoves(tile);
-			Tile addTile = getPosMoves.get(rand.nextInt(getPosMoves.size()));
-			
+			move tempMove;
+			ArrayList<option> scores = new ArrayList<option>();
+			long startTime = System.currentTimeMillis(); //start clock
+			if (startTime - System.currentTimeMillis() < 8000) {
+				possiblePlaces = getPossibleMoves(tile);
+				if(possiblePlaces.isEmpty())
+				{
+					System.out.println("PASS");
+					return new move(0, 0, 0, "PASS", -1);
+				}
+				System.out.println("Succsess... .... finding best place for" + tile.getTileType());
+				for (int i = 0; i < possiblePlaces.size(); i++) {
+					option temp = new option();
+					//System.out.println("adding refrence to: " + i);
+					temp.setRef(i);
+					temp.setScore(0);
+
+					scores.add(temp);
+					//System.out.println("Score it:" + scores.get(i).getScore());
+				}
+			}
+			int score;
+			if (startTime - System.currentTimeMillis() < 8000) {
+				System.out.println("Sorting ....");
+				for (int i = 0; i < scores.size()-1; i++)
+				{
+					int temp = scores.get(i).getRef();
+					int x = possiblePlaces.get(temp).getCol();
+					int y = possiblePlaces.get(scores.get(i).getRef()).getRow();
+
+					//System.out.println("Proximity is "+ getProximity(x,y));
+					score = getProximity(x,y);
+					//System.out.println("Score is:" + score);
+					scores.get(i).setScore(score);
+					//System.out.println("Score it:" + scores.get(i).getScore());
+				}
+				sortList(scores);
+			}
+			//!!!!!!!!!!!!INSERT MORE FUNCTIONS!!!!!!!!!!!!!!!//
+
+			//Add to board
+			System.out.println("Best move: " +scores.get(scores.size() - 1).getScore());
+			Tile addTile = possiblePlaces.get(scores.get(scores.size() - 1).getRef());//takes best move from the array list
+
 			int x = addTile.getRow();
 			int y = addTile.getCol();
 			debugPrint.out("Tile placed at " + x + " " + y);
 			Tile tempTile = new Tile(tile.getTileType());
+			tempTile.setConquered();
 			this.placeTile(x, y, addTile.getDegrees(), tempTile);
 
 			if (x == getTopBound() && x > 0) {
@@ -474,9 +549,9 @@ public class Board {
 			if (y == getRightBound() && y < MAX_COLS - 1) {
 				setRightBound(y + 1);
 			}
-			
+
 			tempMove = new move(x, y, addTile.getDegrees(), "", 0);
-			
+
 			//SCORING STATS
 			if(tigers > 0){
 				//PLACE ON DEN
@@ -485,7 +560,7 @@ public class Board {
 					tempMove.meep = "TIGER";
 					tigers--;
 				}
-				
+
 				else{
 					List<Integer> open = getNeighbors2(x,y);
 					if(open.size() != 0){
@@ -495,7 +570,7 @@ public class Board {
 								if(tile.getTilePortionType()[1] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
-								
+
 								else if((tile.getTilePortionType()[1] == (TerrainType.GAMETRAIL))
 										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 2;
@@ -504,13 +579,13 @@ public class Board {
 									break;
 								}
 							}
-							
+
 							else if(open.get(a) == 2)//left
 							{
 								if(tile.getTilePortionType()[3] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
-								
+
 								else if((tile.getTilePortionType()[3] == (TerrainType.GAMETRAIL))
 										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 4;
@@ -519,13 +594,13 @@ public class Board {
 									break;
 								}
 							}
-							
+
 							else if(open.get(a) == 3)//right
 							{
 								if(tile.getTilePortionType()[5] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
-								
+
 								else if((tile.getTilePortionType()[5] == (TerrainType.GAMETRAIL))
 										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 6;
@@ -534,13 +609,13 @@ public class Board {
 									break;
 								}
 							}
-							
+
 							else if(open.get(a) == 4)//bottom
 							{
 								if(tile.getTilePortionType()[7] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
-								
+
 								else if((tile.getTilePortionType()[7] == (TerrainType.GAMETRAIL))
 										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 8;
@@ -553,39 +628,84 @@ public class Board {
 					}
 				}
 			}
-			
-			
-		}
-		//Possible move list is empty
-		else {
-			tempMove = new move(0, 0, 0, "PASS", -1);
-		}
-		
+
+
+
+
+
+
 		System.out.println("A Tiger was placed at " + tempMove.meepPos + "at tile " + tile.getTileType());
 		return tempMove;
 	}
-	
+	public int getProximity(int x, int y) {
+		int count = 0;
+		if (board[x][y - 1] != null)
+		{
+			count += board[x][y - 1].getConquered();
+		}
+		if (board[x][y + 1] != null)
+		{
+			count += board[x][y + 1].getConquered();
+		}
+		if (board[x][y - 1] != null)
+		{
+			count += board[x][y-1].getConquered();
+		}
+		if (board[x-1][y] != null)
+		{
+			count += board[x-1][y].getConquered();
+		}
+		if (board[x+1][y + 1] != null)
+		{
+			count += board[x+1][y+1].getConquered()/4;
+		}
+		if (board[x-1][y - 1] != null)
+		{
+			count += board[x-1][y-1].getConquered()/4;
+		}
+		if (board[x+1][y - 1] != null)
+		{
+			count += board[x+1][y-1].getConquered()/4;
+		}
+		if (board[x-1][y + 1] != null)
+		{
+			count += board[x-1][y+1].getConquered()/4;
+		}
+
+
+
+		//half points for corners
+
+
+
+
+
+		return count;
+	}
 	public static void main(String[] args){
 		Board board = new Board();
 		Deck deck = new Deck();
-	
+
 		deck.addTile("JJJJ-");
 		deck.addTile("JJJJX");
 		deck.addTile("TJTT-");
 		deck.addTile("TJTJ-");
 		deck.addTile("TTTT-");
-		
-		
+		deck.addTile("TJTT-");
+		deck.addTile("JJJJ-");
+
 		board.addTile(deck.getTop());
 		board.addTile(deck.getTop());
 		board.addTile(deck.getTop());
 		board.addTile(deck.getTop());
 		board.addTile(deck.getTop());
-		
+		board.addTile(deck.getTop());
+		board.addTile(deck.getTop());
+
 		UI ui = new UI();
 		ui.createUIBoard(board);
-		
+
 	}
-	
+
 	
 }
