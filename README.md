@@ -25,7 +25,7 @@ Using command prompt:
 
 1. Download the ZIP from the repository and unzip it
 2. Open up a command prompt or terminal and change directory into the folder
-3. Execute __javac -cp "junit.jar" .\src\Game\*.java .\src\testing\*.java__
+3. Execute __javac -cp "junit.jar" .\src\Game\\*.java .\src\testing\\*.java__
 
 *Make sure that you have Java installed and environmental variables set up
 
