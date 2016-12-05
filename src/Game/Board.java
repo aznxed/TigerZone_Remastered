@@ -567,12 +567,12 @@ public class Board {
 						for(int a = 0; a < open.size(); a++){
 							if(open.get(a) == 1)//top
 							{
-								if(tile.getTilePortionType()[1] == (TerrainType.LAKE)){
+								if(tempTile.getTilePortionType()[1] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
 
-								else if((tile.getTilePortionType()[1] == (TerrainType.GAMETRAIL))
-										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+								else if((tempTile.getTilePortionType()[1] == (TerrainType.GAMETRAIL))
+										&&(tempTile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 2;
 									tempMove.meep = "TIGER";
 									tigers--;
@@ -582,12 +582,12 @@ public class Board {
 
 							else if(open.get(a) == 2)//left
 							{
-								if(tile.getTilePortionType()[3] == (TerrainType.LAKE)){
+								if(tempTile.getTilePortionType()[3] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
 
-								else if((tile.getTilePortionType()[3] == (TerrainType.GAMETRAIL))
-										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+								else if((tempTile.getTilePortionType()[3] == (TerrainType.GAMETRAIL))
+										&&(tempTile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 4;
 									tempMove.meep = "TIGER";
 									tigers--;
@@ -597,12 +597,12 @@ public class Board {
 
 							else if(open.get(a) == 3)//right
 							{
-								if(tile.getTilePortionType()[5] == (TerrainType.LAKE)){
+								if(tempTile.getTilePortionType()[5] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
 
-								else if((tile.getTilePortionType()[5] == (TerrainType.GAMETRAIL))
-										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+								else if((tempTile.getTilePortionType()[5] == (TerrainType.GAMETRAIL))
+										&&(tempTile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 6;
 									tempMove.meep = "TIGER";
 									tigers--;
@@ -612,12 +612,12 @@ public class Board {
 
 							else if(open.get(a) == 4)//bottom
 							{
-								if(tile.getTilePortionType()[7] == (TerrainType.LAKE)){
+								if(tempTile.getTilePortionType()[7] == (TerrainType.LAKE)){
 									//if(!open.contains(2) || )
 								}
 
-								else if((tile.getTilePortionType()[7] == (TerrainType.GAMETRAIL))
-										&&(tile.getTilePortionType()[4] == (TerrainType.END))){
+								else if((tempTile.getTilePortionType()[7] == (TerrainType.GAMETRAIL))
+										&&(tempTile.getTilePortionType()[4] == (TerrainType.END))){
 									tempMove.meepPos = 8;
 									tempMove.meep = "TIGER";
 									tigers--;
@@ -647,9 +647,9 @@ public class Board {
 		{
 			count += board[x][y + 1].getConquered();
 		}
-		if (board[x][y - 1] != null)
+		if (board[x+1][y] != null)
 		{
-			count += board[x][y-1].getConquered();
+			count += board[x+1][y].getConquered();
 		}
 		if (board[x-1][y] != null)
 		{
@@ -674,11 +674,6 @@ public class Board {
 
 
 
-		//half points for corners
-
-
-
-
 
 		return count;
 	}
@@ -693,7 +688,12 @@ public class Board {
 		deck.addTile("TTTT-");
 		deck.addTile("TJTT-");
 		deck.addTile("JJJJ-");
-
+		deck.addTile("LJJJ-");
+		deck.addTile("LLLL-");
+		deck.addTile("LJJJ-");
+		board.addTile(deck.getTop());
+		board.addTile(deck.getTop());
+		board.addTile(deck.getTop());
 		board.addTile(deck.getTop());
 		board.addTile(deck.getTop());
 		board.addTile(deck.getTop());
