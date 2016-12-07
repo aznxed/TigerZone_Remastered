@@ -1,6 +1,7 @@
 ![](http://i68.tinypic.com/2yyz9u9.jpg)
 #Welcome to the TigerZone_Remastered!
 
+This is the Remastered Version. The following is a link to the previous version of TigerZone (https://github.com/aznxed/TigerZone).
 More information, such as architecture and design can be found on at our Wiki
 (https://github.com/aznxed/TigerZone_Remastered/wiki)
 
